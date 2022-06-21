@@ -47,8 +47,7 @@
 
 %%%%Forme%%%%
 
-%Chapter form
-\RequirePackage[Sonny]{fncychap}
+
 %Picture package
 \RequirePackage{graphicx}
 \RequirePackage{textcomp}
