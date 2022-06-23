@@ -1,11 +1,10 @@
 % template d'article LaTeX créé par Max De Wilde (STIC - ULB)
 % contact : madewild@ulb.ac.be
+% modifié par : Selim Ben Ismail
 
 \documentclass[a4paper,11pt]{report} % ce document est un article sur une feuille A4, police taille 11
 \usepackage[utf8]{inputenc} % encodé en utf-8
 \usepackage[T1]{fontenc} % compatible avec les accents
-
-\usepackage[round]{natbib} % gestion des citations
 \usepackage[french]{babel} % rédigé en français
 \usepackage[hyphens]{url} % formatte les liens en autorisant la césure au niveau des traits d'union
 \usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref} % liens cliquables mais non colorés
@@ -18,4 +17,12 @@
 %Chapter form
 \RequirePackage[Sonny]{fncychap}
 %\setlength{\parskip}{0,5cm}
-% insérez ici d'autres extensions avec la commande \usepackage[options]{nom de l'extension}
+% bibliographie
+\usepackage[
+   backend=biber,        % compilateur par défaut pour biblatex
+   sorting=nyt,          % trier par nom, année, titre
+   citestyle=authoryear, % style de citation auteur-année
+   bibstyle=alphabetic,  % style de bibliographie alphabétique
+]{biblatex}
+\addbibresource{biblio.bib}
+
