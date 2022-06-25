@@ -2,13 +2,13 @@
 % contact : madewild@ulb.ac.be
 % modifié par : Selim Ben Ismail
 
-\documentclass[a4paper,11pt]{report} % ce document est un article sur une feuille A4, police taille 11
+\documentclass[a4paper,12pt]{report} % ce document est un article sur une feuille A4, police taille 12
 \usepackage[utf8]{inputenc} % encodé en utf-8
 \usepackage[T1]{fontenc} % compatible avec les accents
 \usepackage[french]{babel} % rédigé en français
 \usepackage[hyphens]{url} % formatte les liens en autorisant la césure au niveau des traits d'union
 \usepackage[pdftex,urlcolor=black,colorlinks=true,linkcolor=black,citecolor=black]{hyperref} % liens cliquables mais non colorés
-\usepackage[top=3cm,bottom=4cm]{geometry} % gère les marges
+\usepackage[top=3cm,bottom=4cm,left=3.5cm]{geometry} % gère les marges
 \usepackage{graphicx} % gestion des images
 \usepackage{array} % gestion des tableaux
 \usepackage{csquotes} % gestion des guillemets
@@ -16,9 +16,10 @@
 \usepackage[absolute]{textpos}
 %Chapter form
 \RequirePackage[Sonny]{fncychap}
-%\setlength{\parskip}{0,5cm}
-% bibliographie
-\usepackage[
+\usepackage{setspace}
+%\setstretch{1,5} % définit l'interligne
+%\setlength{\parskip}{0,5cm} % définit l'espacement entre paragraphe
+\usepackage[             % bibliographie
    backend=biber,        % compilateur par défaut pour biblatex
    sorting=nyt,          % trier par nom, année, titre
    citestyle=authoryear, % style de citation auteur-année
