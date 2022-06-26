@@ -1,0 +1,28 @@
+\chapter{Méthodes}
+Les étapes au sein du processus défini pour passer du registre de rentes en format texte (\textit{.txt}) en cartographie de la région de Douai peuvent être classées en trois types distincts : les opérations d’extraction, les opérations de traitement et les opérations d’exploitation. Il ne s’agit pas, là, de trois phases , comme intuitivement nous pourrions le supposer, mais de trois classes d'opérations qui s’alternent en fonction des étapes du processus.
+
+\section{Le document source}
+Il faut, tout d'abord, évoquer le document source qui sert, non seulement, d'entrée au système, mais comme  il sera vu plus tard\footnote{c.f. Sous-chapitre de l'extraction de l'information}, il servira également au développement et à l'évaluation du système.
+
+Étant donné la préciosité et la fragilité matérielle du registre des rentes de Jean de France en tant qu'objet et les difficultés d'accès au document,il est évident que le travail n'a pas été exécuté directement à partir de celui-ci. Et, au regard de la calligraphie originale\footnote{un extrait est consultable dans les annexes}, presque heureusement, car cela aurait rajouté un travail important d'\textit{OCRisation} et de correction post-traitement. 
+George Espinas, dans son second tome des \og Origines du capitalisme \fg , de 1936, a retranscrit dans une typographie plus actuelle l'intégralité du rentier de Sire Jean de France. C'est sur cette base\footnote{Pour être plus exacte, j'ai reçu de M. De Valeriola un document word(\textit{.docx}) contenant une une retranscription du registre déjà  grandement nettoyée des erreurs d'OCR et épurée d'une partie des symboles d'éditions qui complexifient l'utilisation des  outils de TALN} que le travail s'est effectué.
+
+Le document comporte deux types de marqueurs que je définis comme tels : d'une part, les marqueurs d'éditions, qui sont les marques et symboles dus à l'édition du document (numéros de page, de ligne, de folio, de cahier, références de bas de page, etc.) et d'autre part, les marqueurs de structures, marques et symboles qui viennent directement du document et qui servent à l'organisation du texte (titres, sous-titres, etc.).
+
+Dans le cas de notre document source, comme expliqué en bas de page, les marqueurs d'édition sont inexistants à l'exception des numéros de page\footnote{ Il s'agit des numéros de page provenant du livre de G.Espinas, interrompant le texte là où c'était le cas dans ledit livre}. Quant aux marqueurs de structure, on retrouve :
+\begin{itemize}
+\item le numéro d'escroete marqué par un chiffre romain et suivi aux lignes suivantes d'une définition.
+\item le numéro de connétablie marqué par un caractère \og ° \fg et éventuellement d'un second numéro ou d'une mention \textit{bis}, suivi d'une définition sur les lignes suivantes.
+\item Les marqueurs de rang de voie de la connétablie, indiqués par les caractères \og A \fg et \og B \fg.
+\item Les numéros de rentes successives et de rentes successives dans une même connétablie. Le second numéro vient en exposant du premier dans le document original de G.Espinas, mais lorsque celui-ci est transformé en format texte (\textit{.txt} pour être traité par le logiciel \textit{R}, le codage de l'exposant n'est plus pris en compte et les deux numéros se concatènent. Ce problème sera détaillé plus en profondeur dans le chapitre \textit{Résultats}.  
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
