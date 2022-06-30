@@ -12,6 +12,7 @@
 \usepackage{graphicx} % gestion des images
 \usepackage{array} % gestion des tableaux
 \usepackage{csquotes} % gestion des guillemets
+
 \usepackage{fourier} % utilise une autre police que celle par défaut (Computer Modern)
 \usepackage[absolute]{textpos}
 %Chapter form
@@ -23,7 +24,7 @@
    backend=biber,        % compilateur par défaut pour biblatex
    sorting=nyt,          % trier par nom, année, titre
    citestyle=authoryear, % style de citation auteur-année
-   bibstyle=alphabetic,  % style de bibliographie alphabétique
+   bibstyle=alphabetic  % style de bibliographie alphabétique
 ]{biblatex}
 \addbibresource{biblio.bib}
-
+\AtEveryCitekey{\clearfield{note}\clearfield{pages}\clearlist{location}\clearlist{publisher}\clearfield{doi}\clearfield{url}\clearfield{urlyear}}

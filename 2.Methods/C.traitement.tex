@@ -1,4 +1,23 @@
 \section{Traitement de l'information}
-%draft%
+%%% draft %%%
+Les étapes de traitement de l'information reprennent toutes les opérations qui, d'une manière ou d'une autre, analysent et modifient le contenu originale du document source ou des informations extraites. Il peut s'agir de nettoyage de données ou de regroupement de données. 
+L'objectif des opérations de traitement de l'information est d'améliorer la qualité des données extraites afin qu'elle soit utilisable dans les opérations d'exploitation des données décrites dans la section suivante.
 
-Le traitement de l'information va principalement consister en un clustering d'antroponyes, de nom de lieux ou d'expressions récurrentes  et en la normalisation de ceux ci.
+\subsection{Analyse de la qualité des données} %%%% ref I.Boydens
+La qualité des données est un aspect critique dans tout processus d'automatisation. C'est particulièrement vrai lorsque plusieurs opérations automatisées se succèdent sans vérification manuelle. De petites erreurs en début de processus peuvent alors se propager et prendre de l'ampleur à travers chaque étapes suivantes. Si, par exemple, suite à une erreur, une escroete n'est pas détectée par l'algorithme de segmentation et n'est donc pas non plus répertoriée. De cette seule erreur, découlerait qu'aucune connétablie située au sein de l'escroete ne serait alors répertoriée. Par extension, toutes les rentes situées dans ces connétablies seraient également non-indexées et omissent dans la suite du processus. Ainsi, une simple erreur peut lourdement impacter les résultats obtenus en sortie du système.
+%%%% pas fini
+
+\subsection{Nettoyage des données}
+% ajouter le definition + ref %
+Les stratégies pour la correction des données erronées sont aussi diverses que les causes d'où ces erreurs peuvent provenir. C'est pour cela, qu'avant toute chose, il est impératif de comprendre la nature du document du source et des données qu'il contient. Il faut pouvoir supposer les différents facteurs qui auraient pu altérer l'information lors de son inscription dans le document source afin de mettre en place les vérifications nécessaire pour anticiper, et le cas échéant, corriger les erreurs contenus dans le document.
+
+Dans notre cas, si nous analysons \og l'histoire \fg{} du document source, nous pouvons dire qu'il s'agit d'un document texte au format \textit{.docx} qui  a été converti au format \textit{.txt}. Or, le format \textit{.docx} prend en charge des éléments d'édition de texte qui ne le sont pas dans les fichiers \textit{.txt}. On peut donc prévoir des erreurs liées à la perte d'informations engendrée par la conversion du ficher dans un format plus basique. 
+Ce document \textit{.docx} est une retranscription manuelle d'une partie du livre de G.Espinas \textit{OCRisé}.
+finalement, le livre de G. Espinas est lui même une retranscription du registre original de Sire Jean de France. Aux erreurs provenant du changement de format du document, nous pouvons donc aussi ajouter d'éventuelles erreurs de typographie ou d'OCR.
+
+Quant aux données contenues dans le document, elles sont de nature textuelles en langue picarde du XIIIe siècle. Du fait de cette particularité, les outils de nettoyage classiques sont inefficient. %Ref Boydens, pitrowsky%.
+
+\subsection{Regroupement des données}
+
+
+
