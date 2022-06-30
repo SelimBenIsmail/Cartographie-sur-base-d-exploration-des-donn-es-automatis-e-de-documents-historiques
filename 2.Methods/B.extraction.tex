@@ -27,4 +27,22 @@ De l'exécution du script résulte au final un tableau de données contenant la 
 
 \subsection{Reconnaissance et extraction des entités nommées}
 
+Le concept d'\textit{entité nommée} désigne les unités textuelle possédant une fonction de référentiel au sein d'un contexte. Les noms propres, de personnes, de lieu, ou d'organisation, en sont l'exemple le plus évident, mais les entités nommés peuvent prendre bien d'autre formes telles que des pronoms, des valeurs numériques ou des description définie \parencite{omrane_les_2010,nadeau_survey_2007}.
+
+Selon le type d'entités nommées que l'on cherche à détecter et la nature du texte, la reconnaissance d'entité nommées peut s'avérer être une tâche complexe. Dans le cas de nos travaux, la reconnaissance d'entité se limite à la détection d'anthroponymes et de lieux et ne s'avère par conséquent relativement pas trop complexe. Cependant, au vu des ressources possédés, ni les approches \textit{orientées connaissances}, basée sur des lexiques, ni les approches \textit{orientées données} ne seront exploitables. Il faudra donc retourner à une  approche plus historique qui se concentre sur la reconnaissance de caractères morphologiques telles que les majuscules \parencite{nouvel_reconnaissance_2012}. 
+
+La méthode utilisé se base intégralement sur les travaux de S. De Valeriola. Celle-ci conçoit les anthroponymes comme un l'assemblage d'un  prénom et d' un patronyme. Patronyme qui est constitué d'un ensemble d'unités textuels  pouvant être rassemblé en  groupes de mots ayant la même structure. Plus concrètement, on retrouve, potentiellement,  une ou plusieurs particules  suivi d'un ou plusieurs \og noms \fg{}. La méthode combine donc trois expressions régulières afin de détecter ces trois éléments évoqués : le prénom, la ou les éventuelles particules liés au nom de famille et le ou les noms \parencite{de_valeriola_lordinateur_2021}. L'approche développée est évidement spécifique aux anthroponymes du contexte historique décrit dans la partie \textit{Introduction}.
+
+
 \subsection{Analyse des relations entre entités}
+Rappelons, que dans ce contexte, les entités nommées sont presque uniquement des anthroponymes, et à de rares occasions, un lieu comme une porte d'enceinte ou une place de marché, et que les relations qui les unissent sont des liens de mitoyenneté.
+L'analyse des relations entre entités nommées se fait une fois de plus à l'aide d'expression régulières. Les entrés du registre de rentes, si en tant que telles, sont des données textuelles non-structurées, présentent néanmoins un certain formalisme dans leur construction. G. Espinas nous dit à ce propos : 
+\begin{displayquote}
+    \og Les énoncés des propriétés et de revenus se présentent selon des conditions et même dans des formes tout à fait analogues, à peu près identiques, qui peuvent se schématiser ainsi : « Sur la ou sur les maisons d’un tel et sur tout le tenement — ki fu a un tel, au besoin — , qui siet entre le tenement d’un tel et le tenement d’un tel — , ki, de part et d’autre, furent à un tel, au besoin — , dou fons de le terre, ou apries le fons de le terre, régulièrement, ou sans indication d’affectation par exception — , tant de rente de telle nature, d’un seul ou de plusieurs éléments ».\fg{}
+    \footfullcite[p.113]{espinas_les_1933}
+\end{displayquote} 
+\vspace{0,5cm}
+Pour extraire les entités nommés et définir leurs relations nous pouvons segmenter le texte de la rente deux parties, de part et d'autre de l'expression \og \textit{qui siet entre} \fg{}. Nous récupérons ainsi, dans la première partie, le nom du débiteur, et dans la seconde partie, les noms de ceux avec qui le débiteur partage un lien de mitoyenneté.
+
+
+

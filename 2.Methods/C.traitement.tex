@@ -15,7 +15,9 @@ Dans notre cas, si nous analysons \og l'histoire \fg{} du document source, nous 
 Ce document \textit{.docx} est une retranscription manuelle d'une partie du livre de G.Espinas \textit{OCRisé}.
 finalement, le livre de G. Espinas est lui même une retranscription du registre original de Sire Jean de France. Aux erreurs provenant du changement de format du document, nous pouvons donc aussi ajouter d'éventuelles erreurs de typographie ou d'OCR.
 
-Quant aux données contenues dans le document, elles sont de nature textuelles en langue picarde du XIIIe siècle. Du fait de cette particularité, les outils de nettoyage classiques sont inefficient. %Ref Boydens, pitrowsky%.
+Quant aux données contenues dans le document, elles sont de nature textuelle en langue picarde du XIIIe siècle. Du fait de cette particularité, les outils de nettoyage classiques sont inefficients et, à l'instar de la reconnaissance d'entités nommées, il faut dans notre cas retourner à un approche plus élémentaire, basée sur une reconnaissance morphologique à l'aide d'expressions régulières. % pitrowsky%.
+%Parler des doublons%
+Une autre source de la perte de qualité de l'information, serait la présence de doublon au sein du tableau de données. On peut légitiment supposer qu'il n'y en a pas dans le registre original étant donné que celui-ci a été écrit de la main d'un seul homme selon G. Espinas
 
 \subsection{Regroupement des données}
 
