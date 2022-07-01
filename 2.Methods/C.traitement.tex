@@ -39,14 +39,23 @@ Quant aux données contenues dans le document, elles sont de nature textuelle en
 Une autre source de la perte de qualité de l'information, serait la présence de doublon au sein des tableaux de données. On peut légitiment supposer qu'il n'y en a pas dans le registre original étant donné que celui-ci semble avoir été écrit de la main d'un seul homme  et que chacune des entrées du registre est classée selon un ordre topographique-administratif avec une identifiant unique \parencite{espinas_les_1933}. Cependant, la possibilité que des doublons soient produits par les opérations automatisées de segmentation et de traitement ne sont pas à négliger \parencite{koudoro-parfait_reconnaissance_2022}. Une vérification et une correction automatique sont donc effectuées après le remplissage de chaque tableau de données.
 
 \subsection{Regroupement des données}
-%définition
-Le regroupement des données, appelé aussi \textit{clustering}, entre dans les stratégies courantes de la détection des doublons. Elle fait donc, par définition, partie des opérations de nettoyage des données. Comme sont nom l'indique, le regroupement de données va regrouper et fusionner les enregistrements d'un tableau de données qui partagent de fortes similitudes entres-eux et référençant un même objets. %add ref
+%définition %add ref
+Le regroupement des données, appelé aussi \textit{clustering}, entre dans les stratégies courantes de la détection et nettoyage des doublons. Elle fait donc, par définition, partie des opérations de nettoyage des données. Comme son nom l'indique, le regroupement de données va regrouper et fusionner les enregistrements d'un tableau de données qui partagent de fortes similitudes entres-eux et référençant un objets identique. 
 
 % contexte
+S'il est assez peu probable qu'il y ait des doublons au sein des rentes pour les raisons déjà énoncées, pour autant, il y en a traiter parmi les entités nommées recensées. Ces doublons, dans ce cas précis, ne proviennent pas de négligence dans l'inscription des données, ou d'erreurs  produite par des processus automatisés, mais des particularités du contexte historique.
+en effet, dans la langue du picard médiéval, les anthroponymes peuvent subir de nombreuses variations de graphies ; un phénomène qui touche autant les noms de baptême que les patronymes. S. De Valeriola cite quatre raisons majeures à cela dans ses travaux.
+Tout d'abord, les noms de baptême peuvent être déclinés selon qu'il soit le cas sujet ou le cas régime\parencite{de_valeriola_lordinateur_2021}. Le cas sujet et le cas régime sont des cas grammaticaux hérité du latin qui, aujourd'hui, ont disparut en tant que telle dans la langue française actuelle. \parencite{kalm_roland_2009}.
+Cette déclinaison se manifeste par l'ajout d'une d'une \textit{marque casuelle} \og -s \fg{} au prénom. Ainsi, \og Joséphé \fg{} peut devenir \og Joséphés \fg{} si celui-ci est sujet. Toutefois le présence de la marque n'est pas systématique dans les noms de personnes \parencite{mazziotta_marquage_2014}.
+Ensuite, certain patronymes sont dérivé au féminin lorsqu'ils sont portés par des femmes. De la même manière, la région n'étant pas exclusivement francophone, certain patronymes sont traduit, tantôt en picard, tantôt en flamand. Finalement, on retrouve de petites variations graphiques, sans doute dues à une certaine proximité phonétique \parencite{de_valeriola_lordinateur_2021}.
 
-%methode calcule distance
+%méthode calcule distance
+La stratégie adoptée pour identifier, de manière automatisée, les différentes variantes graphiques que peut prendre un même anthroponyme se base, une nouvelle fois, grandement de S. De Valeriola. 
+Une fois l'ensemble des anthroponymes recensée dans une liste, celle-ci est divisée en deux listes différentes : l'une pour les noms de baptême et l'autre pour les patronymes. Dans chacune des deux listes, la proximité morphologique entre chaque éléments est calculée. Cette proximité morphologique entre deux noms est calculée selon le concept de \textit{distance d'édition}\footnote{Appelée aussi distance \textit{Levensthein}}. 
+La distance d'édition entre deux chaînes de caractères est représenté par un score calculé en fonction du nombre d'opérations d'édition (suppression d'un caractère, insertion d'un caractère, substitution d'un caractère) nécessaires pour transformer une chaîne en l'autre. Il existe une multitude de distances différentes, reprenant la même idée, mais présentant chacune de légères spécificités. 
+Dans notre cas, c'est la distance \textit{Damerau-Levenshtein} qui a été retenue car elle rajoute aux autres l'opération de transposition de deux caractères adjacents qui par la distance Levensthein était considérée comme deux opérations distinctes. 
+A cette distance Damerau-Levensthein, quelques modifications sur la pondération des différentes opérations ont été appliquées afin d'être plus juste quant aux spécificités de la langue picarde médiévale \parencite{de_valeriola_lordinateur_2021}.
 
-%type de  clustering 
-
+Lorsque ces distances sont calculées et représentés sous la forme d'une matrice, un score de seuil est défini par l'agent humain afin de déterminer les différentes graphies pouvant être regroupées ensemble.  % finir la pratique %
 
 
