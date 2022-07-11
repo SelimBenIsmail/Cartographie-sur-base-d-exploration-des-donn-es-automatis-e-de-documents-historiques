@@ -1,0 +1,35 @@
+\section{Segmentation du texte}
+La phase de segmentation  est la première étape d'extraction des données.
+L'algorithme est développé sur les vingts premières pages du registre. Lorsque celui-atteint une précision suffisante sur ce set de données réduit, il est alors testé et évalué sur l'ensemble du registre.
+
+Lorsque le document source est importé dans l'environnement de développement en format texte (\textit{.txt}), ce dernier va découper le contenu textuel en petites chaînes de caractères au niveau des espaces et stocker celles-ci dans un vecteur de type caractère. Ceci présente l'avantage que chaque mot ou marqueur de structure peut être désigné par sa position à l'intérieur du vecteur. Par conséquent, capturer une section spécifique du texte, nécessite uniquement de pouvoir déterminer les positions du début et de fin de celle-ci au sein du vecteur.  
+
+Le document source est donc transformé en un vecteur \textit{T} de 15390 éléments.
+Quant aux procédés de détection et de capture des différentes parties du document source, ils peuvent être décrits par les expressions régulières et les formules contenues dans le tableau \ref{regexSeg}.
+\vspace{0,5cm}
+\renewcommand{\arraystretch} {1.5}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|l|c|l|}
+        \hline Objet & Symbole & Regex ou Formule \\
+        \hline \hline Marqueur d'escroete & $mEs$ & /\textasciicircum[IV]+([1-9])?\$/ \\
+        \hline Section d'escroete & $sEs$& $ sEs_{[n]} =  T[mEs_{[n]}:mEs_{[n+1]}-1] $\\
+        \hline  Définition d'escroete & $dEs $& $ dEs_{[n]} = T[mEs_{[n]}:mCo_{[1]}-1] $\\
+        \hline  Marqueur de connétablie & $mCo$ & /[0-9]+°/ \\
+        \hline Section de connétablie & $sCo $& $sCo_{[n]} =  sEs[mCo_{[n]}:mCo_{[n+1]}-1] $\\
+        \hline Définition de connétablie & $dCo$ & $ dCo_{[n]} = sEs[mCo_{[n]}:mRdV_{1]}-1] $\\
+            & & $ dCo_{[n]} = sEs[mCo_{[n]}:mRe_{1]}-1] $ \\
+        \hline  Marqueur de rang de voie & $mRdv$ & /\textasciicircum[AB]\$/ \\
+        \hline Section de rang de voie & $sRdv$ &$ sRdv_{[n]} = sCo[mRdv_{[n]}:mRdv_{[n+1]}-1] $\\
+        \hline Marqueur de rente & $mRe$ & /[0-9]\{2,\}./ \\
+        \hline Section de rente & $sRe$& $sRe_{[n]} = sRdv[mRe_{[n]}:mRe_{[n+1]}-1]$ \\
+            & &  $ sRe_{[n]} = sCo[mRe_{[n]}:mRe_{[n+1]}-1]$ \\
+        \hline
+    \end{tabular}
+    \caption{Formules et expression régulières pour la segmentation du registre}
+    \label{regexSeg}
+\end{table}
+\vspace{0,5cm}
+
+\subsection{Évaluation}
+\subsection{Correction}

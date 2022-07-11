@@ -1,0 +1,31 @@
+\section{Pistes d'améliorations}
+Le mémoire décrit le développement d'un système traduisant un document historique textuel en cartographie. Le processus par lequel passe le document est long  et traverse nombreux champs des technologie de l'information et des humanités numériques. Dans le cadre de ce  mémoire, qui est avant tout un prototype, un \textit{proof of concept}, ces aspects n'ont pu être explorés que dans une profondeur relative, voire de manière très superficielle pour certain. De fait, les pistes d'amélioration du système sont très nombreuses.
+
+\subsection{Nettoyage des erreurs d'\textit{OCR} et de typographies}
+%intro
+Dans cadre de ce mémoire, une retranscription du registre de rentes en format  \textit{word(.docx)} a été fournie par % ...%. 
+Cette retranscription est très propre et  ne contient pour ainsi dire pas d'erreurs résiduelles d'\textit{OCR} ou de typographies. Elle était donc utilisable qu'il faille passer par une phase de nettoyage préalable. S'il avait fallu utiliser une version provenant directement de l'\textit{OCRisation} du livre de G.Espinas, ce nettoyage aurait été très certainement nécessaire. 
+%A vérifier + ref (petrowski)%
+La correction des erreurs d'\textit{OCR} se base généralement sur des approches statistiques nécessitant des corpus de la langue cible. Si l'on considère l'approche d'utiliser uniquement les données provenant du livre, qui a caractérisé l'intégralité du travail, je suggère une stratégie similaire à celle adoptée pour le regroupement des anthroponymes.
+
+%analyse des besoins%
+L'entièreté du texte n'a pas besoin d'être corrigé pour être utilisable, mais seulement certaines expressions servant à la reconnaissance de la structure du texte par les algorithmes d'extractions de l'information ainsi que les valeurs (les erreurs au sein des noms d'entités nommées sont, en toute logique, corrigées lors de la phase de regroupement des anthroponymes). Dans les expressions liées à la structure du texte, on retrouve par exemple l'expression <<\textit{ki sient entre}>> (et ses variantes), qui dans le texte sépare le débit-rentier de ses voisins ou  les expressions <<\textit{dou fond de la tiere}>> et <<\textit{aprés le fond de la tiere}>>  qui permettent d'identifier le montant et la nature de la rente à verser au débit-créancier, tandis que dans les <<valeurs>> on va retrouver les différentes utilisées pour régler le payement, par exemple % ... %.
+
+%stratégie%
+Je suggère donc de créer manuellement une liste de ces différentes expressions. Et une fois le fichier importé dans \textit{RStudio} et son contenu textuel transformé en un vecteur, de fusionner les éléments par petits groupes en fonction de l'expression que l'on cherche à corriger (par cinq pour l'expression <<\textit{ki sient entre}>> par exemple). 
+Ensuite, calculer la distance Damerau-Levensthein\footnote{La distance Damerau-Levansthein sans les modifications de pondération apportées dans le cadre du regroupement des anthroponymes} entre l'expression testée et tous les éléments du vecteur, puis à remplacer par l'expression testée, ceux dont la distance est inférieure à un seuil préétabli. %exemple en annexe%
+%conclusion
+Cette stratégie nécessiterait un temps de calcul considérable mais présenterait l'avantage d'être automatisée et de ne nécessiter aucune ressource extérieures.
+
+\subsection{Mise en place d'un système de table de données}
+%système de table de données
+\subsection{Amélioration de la qualité des données}
+%amélioration de la qualité des données
+\subsubsection{Regroupement des anthroponymes}
+\subsubsection{Enrichissement des  données}
+%clustering des anthroponymes :  prendre en compte le numero de connétablie les rente étant classées par region topographie, si deux forme sont éloignés dans le texte, on peut supposer qu'il ne s'agit pas de la même personne +couplé les méthodes  de calculs de distance  avec une base de données prosopopique afin de bénéficier d'une approche par connaissance. + améliorer l'algorithme
+\subsection{Extension du projet}
+%montant des rentes
+%dispersion des patronymes
+%évolution de l'empire immobilier de JdF  en couplant l'avec l'analyse des actes notariés du livre de G.Espinas
+%amélioration du code
