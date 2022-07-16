@@ -46,11 +46,12 @@ Le regroupement des données, appelé aussi \textit{clustering}, entre dans les 
 S'il est assez peu probable qu'il y ait des doublons au sein des rentes pour les raisons déjà énoncées, pour autant, il y en a parmi les entités nommées recensées. Ces doublons, dans ce cas précis, ne proviennent pas de négligence dans l'enregistrement des données, ou d'erreurs  produites par des processus automatisés, mais par des particularités liées au contexte historique.
 En effet, dans la langue du picard médiéval, les anthroponymes peuvent subir de nombreuses variations de graphies ; un phénomène qui touche autant les noms de baptême que les patronymes. S. De Valeriola cite quatre raisons majeures à cela dans ses travaux.
 
+%cause de la multiplicité des forme d'un anthroponymes 
 Tout d'abord, les noms de baptême peuvent être déclinés en fonction de s'il est au cas sujet ou au cas régime\parencite{de_valeriola_lordinateur_2021}. Le cas sujet et le cas régime sont des cas grammaticaux hérités du latin qui, aujourd'hui, ont disparu en tant que tels dans la langue française actuelle. \parencite{kalm_roland_2009}.
 Cette déclinaison se manifeste par l'ajout d'une \textit{marque casuelle} \og -s \fg{} au prénom. Ainsi, \og Joséphé \fg{} peut devenir \og Joséphés \fg{} si celui-ci est sujet. Toutefois, la présence de la marque n'est pas systématique dans les noms de personnes \parencite{mazziotta_marquage_2014}.
 Ensuite, certains patronymes provenant de noms de métier ou de qualificatifs peuvent être dérivés au féminin lorsqu'ils sont portés par des femmes. On retrouve par exemple dans le registre un Druion Le Maçon, une Margritain Le Maçonnesse et  une Alis Le Maçone qui devaient probablement venir de la même famille bien que leur patronyme ne soit pas exactement identique. Également, la région n'étant pas exclusivement francophone, certains patronymes sont traduits, tantôt en picard, tantôt en flamand. Finalement, on retrouve de petites variations graphiques, sans doute dues à une certaine proximité phonétique \parencite{de_valeriola_lordinateur_2021}.
 
-%méthode calcule distance
+%méthode calcul de distance
 La stratégie adoptée pour identifier les différentes variantes graphiques que peut prendre un même anthroponyme s'inspire, une nouvelle fois, grandement d'un article de S. De Valeriola, dans lequel il cherche à regrouper les différentes graphies de patronymes des protagonistes et témoins au sein d'actes urbains des villes du nord de la France et de Flandre, de manière semi-automatisée \parencite{de_valeriola_lordinateur_2021}.
 
 Une fois l'ensemble des anthroponymes recensé dans une liste, la proximité morphologique entre chaque élément est calculée. Cette proximité morphologique entre deux anthroponymes est calculée selon le concept de \textit{distance d'édition}\footnote{Appelée aussi distance \textit{Levensthein}}. 
@@ -65,12 +66,23 @@ Lorsque ces distances sont calculées, elles peuvent alors être représentées 
 Le choix de cette distance de seuil est une question particulièrement délicate et complexe qui a un impact  direct sur les résultats obtenus lors de l'exploitation des données. Si la distance seuil est trop haute, des anthroponymes risquent d'être intégrés à des groupes rassemblant des anthroponymes faisant référence à un autre personnage. Les résultats seront alors parasités par du \textit{bruit}. Ce bruit se concrétise par la fusion de sommets lors de la modélisation des graphes, ce qui créer de faux liens de mitoyenneté et déplacera également les sommets voisins, avec le risque d'une réaction en chaîne.
 Au contraire, si la distance seuil est trop basse, certaines formes d'un anthroponyme risquent de ne pas être groupées avec les autres formes de variantes qui faisaient référence au même personnage. C'est du \textit{silence} qui est récolté dans ce cas. Il apparaît alors l'action inverse : au lieu que de multiples entités soient modélisées en un seul sommet, une entité unique se voit être modélisée en plusieurs sommets. Si le silence peut être relativement moins grave que le bruit dans notre contexte, dans le sens où il ne provoque pas de réactions en chaîne, il crée aussi des erreurs dans la modélisation des graphes. Il faut donc le réduire au possible.
 
+%choix de la méthode 
 Sur base du principe de calcul de distance précédemment évoqué, et au-delà du choix de la distance de seuil, il existe différentes méthodes d'application. On peut décider de calculer la distance sur l'anthroponyme entier (nom de baptême et patronyme, ensemble, considéré comme une seule chaîne de caractère) ou sur les noms de baptême  et patronymes, chacun traité séparément, dans deux matrices différentes. En plus de cela, il est encore possible de modifier la pondération des éléments du  calcul des distances, à l'instar des modifications déjà apportées par S. De Valeriola.
 
+%ce qui a été décidé
 En définitive, il a été décidé de calculer la distance sur l'entièreté de l'anthroponyme avec  une modification du poids de l'opération de substitution dans le calcul et de définir la distance de seuil à 3. 
 Ces choix ont été déterminés par une série de tests destinés à observer la quantité de bruit récupérée avec les différentes méthodes. Ceux-ci seront plus amplement détaillés dans le chapitre \textit{Résultats}.
 
+%remplacement dans le dataframe
+Lorsque toute les variants graphiques de chaque anthroponyme sont recensés dans une liste par l'algorithme, cette dernière est alors vérifiée par l'agent humain. Si des erreurs sont remarquées au sein de la liste des groupes, en l'absence de solution de correction automatique, celle-ci est corrigée manuellement.
 
+La liste vérifiée, toutes les section de rentes du tableau de données principale sont parcourues, et chaque fois qu'une forme variante d'un anthroponymes, qui a été listée, est détectée, celle-ci est un remplacée par une forme généralisée de l'anthroponyme. 
 
+\begin{figure} % insère une figure ici (h = "here")
+    \centering
+    \includegraphics[scale=0.75]{2.Methods/Img/clustering.drawio.pdf} 
+    \caption{Organigramme de l'algorithme de regroupement des anthroponymes}
+    \label{schemaClustering}
+\end{figure}
 
 

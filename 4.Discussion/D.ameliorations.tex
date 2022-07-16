@@ -4,8 +4,8 @@ Le mémoire décrit le développement d'un système traduisant un document histo
 \subsection{Nettoyage des erreurs d'\textit{OCR} et de typographies}
 %intro
 Dans cadre de ce mémoire, une retranscription du registre de rentes en format  \textit{word(.docx)} a été fournie par % ...%. 
-Cette retranscription est très propre et  ne contient pour ainsi dire pas d'erreurs résiduelles d'\textit{OCR} ou de typographies. Elle était donc utilisable qu'il faille passer par une phase de nettoyage préalable. S'il avait fallu utiliser une version provenant directement de l'\textit{OCRisation} du livre de G.Espinas, ce nettoyage aurait été très certainement nécessaire. 
-%A vérifier + ref (petrowski)%
+.Cette retranscription est relativement propre et contient assez peu d'erreurs résiduelles d'\textit{OCR} ou de typographies. Elle était donc utilisable sans qu'il faille passer par une phase de correction préalable. S'il avait fallu utiliser une version provenant directement de l'\textit{OCRisation} du livre de G.Espinas, ce nettoyage aurait été très certainement nécessaire. 
+
 La correction des erreurs d'\textit{OCR} se base généralement sur des approches statistiques nécessitant des corpus de la langue cible. Si l'on considère l'approche d'utiliser uniquement les données provenant du livre, qui a caractérisé l'intégralité du travail, je suggère une stratégie similaire à celle adoptée pour le regroupement des anthroponymes.
 
 %analyse des besoins%
@@ -22,8 +22,21 @@ Cette stratégie nécessiterait un temps de calcul considérable mais présenter
 \subsection{Amélioration de la qualité des données}
 %amélioration de la qualité des données
 \subsubsection{Regroupement des anthroponymes}
+Comme déjà discuté, le regroupement d'anthroponymes est une problématique complexe qui ne trouve actuellement aucune solution générale parfaite dans la littérature. Il est par conséquent nécessaire d'apporter des modifications à ces solutions imparfaites pour les rendre plus adéquates au spécificités du contexte étudié.
+
+Afin d'améliorer la méthode employée, il a été envisagé de coupler le calcul de distance avec des éléments extraient lors de la segmentation tels que le numéro de rente ou la connétablie. Cette idée nait  de deux constats.
+Le premier est que les rentes sont, pour la quasi totalité, classées dans le registre selon un ordre topographique. Le second, est qu'une fois les rentes nettoyées des expressions <<ki fu + anthroponyme>> (et de leurs variantes), les personnages sont, à priori, mentionnés, soit en tant que de débitrentier habitants des propriétés faisant l'objet de la rente, soit en tant qu'habitant des propriétés mitoyennes à la rente. Par conséquence, une même personne ne devrait pas être mentionnée dans différentes rentes éloignées géographiquement. 
+Malheureusement, cette hypothèse se voit être réfutée par l'analyse du graphe  qui nous montre des sommets avec des degrés très élevé, jusqu'à 10 pour \textit{Richart Pourciel}\footnote{Une recherche en \textit{plein texte} dans le document source nous confirme qu'il y a effectivement des mentions de cet individu dans différentes connétablies et qu'il ne s'agit pas d'une erreur d'un des algorithmes}.
+De cela, découle deux suppositions qui devront être considérées afin de diminuer les erreurs au sein du système. 
+\begin{itemize}
+    \item Certain de personnage peuvent être débiteur de plusieurs rentes immobilière. 
+    \item Plusieurs individus partagent le même anthroponyme, soit des cas d'homonymies.
+\end{itemize}
+
+Une autre approche pour améliorer la reconnaissance et regroupement d'anthroponymes serait de coupler avec d'autres sources ou base de données et d'envisager une stratégie orientée connaissance.
+Finalement, il reste toujours la possibilité d'améliorer l'algorithme de calcul des distances en modulant le poids des opérations dans des cas précis (diminuer le poids de l'ajout ou de la suppression d'un espace pour alléger le score des particules dans les patronymes, par exemple). Ceci nécessite d'effectuer de nombreux essaies et analyses qui sont lourdes en terme de ressources informatiques\footnote{Pour calculer les distances séparant chacune des 799 formes d'anthroponymes capturées entre-elles, l'ordinateur a travaillé pendant presque une heure}, mais l'informatique quantique, qui se fait de plus en plus accessible via des options de \textit{cloud computing}, devrait améliorer notablement la vitesse d'exécution de ce type de calcul. 
+
 \subsubsection{Enrichissement des  données}
-%clustering des anthroponymes :  prendre en compte le numero de connétablie les rente étant classées par region topographie, si deux forme sont éloignés dans le texte, on peut supposer qu'il ne s'agit pas de la même personne +couplé les méthodes  de calculs de distance  avec une base de données prosopopique afin de bénéficier d'une approche par connaissance. + améliorer l'algorithme
 \subsection{Extension du projet}
 %montant des rentes
 %dispersion des patronymes

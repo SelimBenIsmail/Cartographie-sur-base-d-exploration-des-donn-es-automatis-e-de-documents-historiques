@@ -1,3 +1,44 @@
 \section{Extraction des relations}
+%draft
+L'extraction des relations est une nouvelle phase d'extraction de l'information, mais qui ne peut avoir lieu qu'après la normalisation des formes variantes des anthroponymes résultant de la phase de regroupement des anthroponymes.
+Le registre des rentes ayant été préalablement découpé en rentes, l'objectif de cette opération consiste à déterminer les liens qui unissent les différentes individus détectés au sein d'un énoncé de rente.
 
+Les énoncés des rentes présentent un certain formalisme dans leur structure, on peut retrouver le motif suivant dans la quasi totalisé des énoncés: 
+\begin{enumerate}
+\item L'objet de la rente +  \textbf{anthroponyme du débiteur de la rente}
+\item << \textbf{ki siet entre}>> ou une variante proche de cette expression
+\item <<le tenement>> +  \textbf{anthroponyme du premier voisin } + << d'une part>> 
+\item << et le tenement >> + \textbf{anthroponyme du second voisin} + << d'autre part>>
+\end{enumerate}
+Des expressions \textit{<< ki fu >> + anthroponyme} peuvent également apparaître dans ce motif juste après un anthroponyme afin de désigner l'ancien propriétaire de la propriété bâtie ou du tenement. 
+
+%nettoyage
+Dans un premier temps, la colonne du tableau de données principal contenant les énoncés de rentes est copié dans un nouveau vecteur <<\textit{rentes}>> afin de pas altérer les données de référence. Ensuite, de sorte qu'il ne reste plus que les anthroponymes du débiteur et de ses voisins, les rentes sont nettoyées des éventuelles expressions évoquant les anciens propriétaires grâce à la fonction \textit{str\_remove()} et à l'assemblage des deux expressions régulières suivantes : 
+\[ \boxed{ 
+    \text{ki fu(rent)? ((femm?e )|((le )?maistre )|((le )?vallés ))? }
+    }
+\]
+\[ \boxed{ 
+    \text{ 
+        (MGR )?[:upper:]{2,} (((L[AEI']S?|D[EUO']L?U?|AU?)?){0,2} ?[:upper:]\{2,\}(-[:upper:]\{2,\})?)\{1,3\} }
+    }
+\]
+
+%explication regex
+Le première, capture l'expression <<\textit{ki fu}>> et sa forme au pluriel <<\textit{ki furent}>> ainsi que les éventuels titres ou status de <<femme>>, <<maistre>> ou <<vallés>> qui, s'ils ne sont pas pris en compte, bloquent la seconde expression régulière. La seconde expression régulière est celle de détection des anthroponymes écrite par S. De Valeriola, mais adaptée aux lettres capitales.
+
+Les énoncés de rentes tronquées des anthroponymes qui ne nous intéressent pas, il est possible maintenant de segmenter ceux-ci en deux sous-chaînes autour des expressions <<\textit{Si sient}>>, <<\textit{Si siet}>>, <<\textit{ki sient}>>, <<\textit{ki iet}\footnote{Cette variante provient très certainement d'une erreur de typographie ou d'\textit{OCR}}>>.
+
+A cette fin la fonction \textbf{str\_locate} est utilisé avec l'expression régulière :
+\[ 
+    \boxed{
+        \text{
+            (S|s|K|k)i s?ien?t
+        }
+    }
+\]
+ Cette dernière nous retourne les indices dans la chaîne de caractère (de l'énoncé nettoyé) auxquels corresponds le début et la fin de l'expression recherchée. Ces indices de localisation permet alors d'extraire une sous-chaîne de caractère depuis l'énoncé de la rente à l'endroit voulu grâce à la fonction \textit{str\_sub()}.
+ 
+ Lorsque les deux sous-chaînes sont récupérées, une reconnaissance des anthroponymes est effectuée dans chacune d'elles  et permet d'obtenir l'anthroponyme du débiteur dans la première sous-chaine, et celui de ces voisins dans la seconde sous-chaine. Ces relations peuvent alors être mises sous la forme de couples dans un nouveau tableau de données \textit{df\_links}.
+ 
 \section{Modélisation des graphes}

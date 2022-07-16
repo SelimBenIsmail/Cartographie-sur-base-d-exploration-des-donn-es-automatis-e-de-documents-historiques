@@ -11,19 +11,23 @@ Les marqueurs des structures, étant chacun unique, ils constituent des clés id
 C'est donc sur base de la reconnaissance de ces marqueurs par des \textit{regex}\footnote{appelées aussi \og expressions régulières\fg{}.} que l'algorithme va, de manière récursive, découper le texte initial en plusieurs parties. Dans un même temps, l'algorithme va construire un tableau de données afin de  recueillir les informations. 
 
 La figure \ref{schemaSeg} illustre par un organigramme les étapes effectuées par le script de segmentation du texte source.
+%call 
 L’algorithme va en premier lieu parcourir le fichier et indexer tous les marqueurs d'escroete. Pour chaque marqueur d'escroete indexé, la section concernant celle-ci, ainsi que la définition correspondante, va être capturée et stockée dans un tableau de données\footnote{appelé aussi \textit{dataframe}, ou \textit{df} en abrégé}. Maintenant que le document texte est découpé au niveau des marqueurs d'escroete, pour chaque escroete répertoriée dans le tableau de données, une fonction similaire est appelée  en prenant comme argument la section de l'escroete concernée au lieu du texte source.
 La fonction appelée détecte et indexe les marqueurs de connétablie. 
 Ensuite pour chaque marqueur de connétablie indexé, la section est capturée et stockée dans un nouveau tableau de données, où pour chacune des connétablies, à nouveau, une fonction similaire est appelée pour exécuter les mêmes opérations ( indexation des marqueurs, capture et stockage des sections ) au niveau des rangs de voie, puis encore une fois au niveau des rentes.
+
+%retrieve
 Lorsque les sections de toutes les rentes d'un rang de voie sont stockées dans un tableau de données avec leur clé
 \footnote{La clé prend la valeur du marqueur, dans le cas des rentes il s'agit du numéro de rente}, 
 la fonction appelée renvoie ce tableau à la fonction appelante, c’est-à-dire à la fonction d'extraction des rangs de voie, si la connétablie en possède, sinon la fonction d'extraction des connétablies dans l'autre cas. La fonction appelante va collecter tous les tableaux - un pour chacune des sections qu'elle stocke dans son propre tableau de données - et va ensuite les fusionner en y rajoutant sa propre clé (indicateur du rang de voie ou numéro de connétablie). L'opération est répétée ensuite vers les fonctions appelantes supérieures.
 
+%result
 De l'exécution du script résulte un tableau de données contenant la clé et la définition de chaque escroete, de chaque connétablie, et de chaque rente. La création d'un système de tables de données au lieu d'un grand tableau de données a également été envisagée, cependant la solution du tableau de données a été retenue pour sa plus grande simplicité de mise en place et d'utilisation pour et parce qu'elle était suffisante pour les besoins du projet. L'alternative du système de table de données sera abordée avec plus de précision  dans la partie \textit{Discussion} du mémoire.
 
 \begin{figure}[ht] % insère une figure ici (h = "here")
     \centering
     \includegraphics[scale=0.75]{2.Methods/Img/seg.drawio.pdf} 
-    \caption{Organigramme de la segmentation automatisée du registre de rente.}
+    \caption{Organigramme de l'algorithme segmentation automatisée}
     \label{schemaSeg}
 \end{figure}
 
@@ -34,8 +38,17 @@ Selon le type d'entité nommée que l'on cherche à détecter et la nature du te
 
 La méthode utilisée pour détecter les anthroponymes au sein du document source se base intégralement sur les travaux de S. De Valeriola. Celle-ci conçoit les anthroponymes comme l'assemblage d'un nom de baptême et d'un patronyme. Patronyme qui est constitué d'un ensemble d'unités textuelles  pouvant être rassemblées en  groupes de mots ayant la même structure. Plus concrètement, on retrouve, potentiellement,  une ou plusieurs particules  suivies d'un ou plusieurs <<noms>>. La méthode combine donc trois expressions régulières afin de détecter ces trois éléments évoqués : le prénom, la ou les éventuelles particules liées au nom de famille et le ou les noms \parencite{de_valeriola_lordinateur_2021}. L'approche développée est évidemment spécifique aux anthroponymes liés au contexte historique décrit dans la partie \textit{Introduction}.
 
+La reconnaissance des anthroponymes s'effectue dans les sections des rentes contenues dans le tableau de données principal. Chaque chaîne de caractères correspondant à un anthroponyme d'après l'expression régulière est stockée au sein d'un vecteur. Ensuite, les doublons sont supprimés et les anthroponymes restant sont réenregistrés en lettres capitales afin de faciliter les étapes de regroupement des anthroponymes.
+
+\begin{figure} % insère une figure ici (h = "here")
+    \centering
+    \includegraphics{2.Methods/Img/REN.drawio.pdf} 
+    \caption{Organigramme de l'algorithme d'extraction des anthroponymes}
+    \label{schemaRen}
+\end{figure}
+
 \subsection{Analyse des relations entre entités}
-Rappelons, que dans ce contexte, les entités nommées sont presque uniquement des anthroponymes, et à de rares occasions, un lieu comme une porte d'enceinte ou une place de marché, et que les relations qui les unissent sont des liens de mitoyenneté.
+Rappelons, que dans ce contexte, les entités nommées sont pour la grande majorité des anthroponymes, et à de rares occasions, un lieu comme une porte d'enceinte ou une place de marché, et que les relations qui les unissent sont des liens de mitoyenneté.
 L'analyse des relations entre entités nommées se fait une fois de plus à l'aide d'expression régulière. Les entrées du registre de rentes, si en tant que telles, sont des données textuelles non structurées, présentent néanmoins un certain formalisme dans leur construction. G. Espinas nous dit à ce propos : 
 \begin{displayquote}
     \og Les énoncés des propriétés et de revenus se présentent selon des conditions et même dans des formes tout à fait analogues, à peu près identiques, qui peuvent se schématiser ainsi : « Sur la ou sur les maisons d’un tel et sur tout le tenement — ki fu a un tel, au besoin — , qui siet entre le tenement d’un tel et le tenement d’un tel — , ki, de part et d’autre, furent à un tel, au besoin — , dou fons de le terre, ou apries le fons de le terre, régulièrement, ou sans indication d’affectation par exception — , tant de rente de telle nature, d’un seul ou de plusieurs éléments ».\fg{}
@@ -43,6 +56,8 @@ L'analyse des relations entre entités nommées se fait une fois de plus à l'ai
 \end{displayquote} 
 \vspace{0,5cm}
 Pour extraire les entités nommées et définir leurs relations, nous pouvons segmenter le texte de la rente en deux parties, de part et d'autre de l'expression <<\textit{ki siet entre}>> (et des variantes de cette expression). Nous récupérons ainsi, dans la première partie, le nom du débiteur, et dans la seconde partie, les noms de ceux avec qui le débiteur partage un lien de mitoyenneté.
+
+Afin d'éviter que par la suite, les valeurs manquantes (\textit{NA}) soient modélisées en un seul sommet\footnote{La bibliothèque \textit{Igraph} transforme automatiquement les valeurs \textit{NA} en chaîne de caractères <<NA>> avant de générer les graphes}, si aucun anthroponymes ne devait être détecté, comme débitrentier dans la première sous chaîne de caractère, le sommet prendrait la valeur <<ukn>> suivi d'un nombre incrémenté à chaque nouveau sommet de valeur inconnue. Si, au contraire, plusieurs anthroponymes devaient être détectée comme débiteurs  dans la première sous-chaîne, seule le premier serait retenu. Ces choix  risquent de crée des pertes d'informations :  une entité unique pour être dédoublée en deux sommets <<ukn>> différents et ainsi empêcher d'autres sommets voisins de se relier ou  un sommet représentant deux individus partageant une même rente serait tronqué de l'un des deux anthroponymes. Pour autant ils sont nécessaires et faits en raison d'un compromis entre le sacrifice de données valides et le risque d'intégration de données corruptives.
 
 
 

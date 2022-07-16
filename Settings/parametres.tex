@@ -1,7 +1,6 @@
 % template d'article LaTeX créé par Max De Wilde (STIC - ULB)
 % contact : madewild@ulb.ac.be
 % modifié par : Selim Ben Ismail
-
 \documentclass[a4paper,12pt]{report} % ce document est un article sur une feuille A4, police taille 12
 \usepackage[utf8]{inputenc} % encodé en utf-8
 \usepackage[T1]{fontenc} % compatible avec les accents
@@ -12,7 +11,10 @@
 \usepackage{graphicx} % gestion des images
 \usepackage{array} % gestion des tableaux
 \usepackage{csquotes} % gestion des guillemets
-
+\usepackage{longtable}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\setlongtables
 \usepackage{fourier} % utilise une autre police que celle par défaut (Computer Modern)
 \usepackage[absolute]{textpos}
 %Chapter form
@@ -28,3 +30,6 @@
 ]{biblatex}
 \addbibresource{biblio.bib}
 \AtEveryCitekey{\clearfield{note}\clearfield{pages}\clearlist{location}\clearlist{publisher}\clearfield{doi}\clearfield{url}\clearfield{urlyear}}
+
+\usepackage{chngpage}
+\usepackage{amsmath}
