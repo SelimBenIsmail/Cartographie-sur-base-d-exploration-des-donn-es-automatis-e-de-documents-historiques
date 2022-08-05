@@ -24,7 +24,7 @@ Dans le cas d'un système qui serait alimenté par des flux de données nouvelle
 
 \subsection{Nettoyage des données}
 %définition 
-Le nettoyage des données est un processus d'amélioration des données qui a pour but, au travers d'une série de transformations, de normaliser les données et de détecter lorsque plusieurs enregistrements font référence à un même objet (phénomène de surcouverture) \parencite{berti-equille_qualite_2004}.
+Le nettoyage des données est un processus d'amélioration des données qui a pour but, au travers d'une série de transformations, de normaliser les données et de détecter lorsque plusieurs enregistrements font référence à un même objet (phénomène de sur couverture) \parencite{berti-equille_qualite_2004}.
 
 %stratégie de nettoyage %
 Les stratégies pour la correction des données erronées sont aussi diverses que les causes d'où ces erreurs peuvent provenir. C'est pour cela qu'avant toute chose, il est impératif de comprendre la nature du document source et des données qu'il contient. Il faut pouvoir supposer les différents facteurs qui auraient pu altérer l'information lors de son inscription dans le document source afin de mettre en place les vérifications nécessaires pour anticiper, et le cas échéant, corriger les erreurs contenues dans le document.
@@ -40,16 +40,16 @@ Une autre source de la perte de qualité de l'information serait la présence de
 
 \subsection{Regroupement des données}
 %définition %add ref
-Le regroupement des données, appelé aussi \textit{clustering}, entre dans les stratégies courantes de détection et nettoyage des doublons. Elle fait donc, par définition, partie des opérations de nettoyage des données. Comme son nom l'indique, le regroupement de données va regrouper et fusionner les enregistrements d'un tableau de données qui partagent de fortes similitudes entre eux, et référençant un objet identique. 
+Le regroupement des données, appelé aussi \textit{clustering}, entre dans les stratégies courantes de détection et nettoyage des doublons. Elle fait donc, par définition, partie des opérations de nettoyage des données. Comme son nom l'indique, le regroupement de données va regrouper et fusionner les enregistrements d'un tableau de données  partageant de fortes similitudes entre eux et référençant un objet identique. 
 
 % contexte
 S'il est assez peu probable qu'il y ait des doublons au sein des rentes pour les raisons déjà énoncées, pour autant, il y en a parmi les entités nommées recensées. Ces doublons, dans ce cas précis, ne proviennent pas de négligence dans l'enregistrement des données, ou d'erreurs  produites par des processus automatisés, mais par des particularités liées au contexte historique.
 En effet, dans la langue du picard médiéval, les anthroponymes peuvent subir de nombreuses variations de graphies ; un phénomène qui touche autant les noms de baptême que les patronymes. S. De Valeriola cite quatre raisons majeures à cela dans ses travaux.
 
-%cause de la multiplicité des forme d'un anthroponymes 
-Tout d'abord, les noms de baptême peuvent être déclinés en fonction de s'il est au cas sujet ou au cas régime\parencite{de_valeriola_lordinateur_2021}. Le cas sujet et le cas régime sont des cas grammaticaux hérités du latin qui, aujourd'hui, ont disparu en tant que tels dans la langue française actuelle. \parencite{kalm_roland_2009}.
+%cause de la multiplicité des formes d'un anthroponymes 
+Tout d'abord, les noms de baptême peuvent être déclinés en fonction de s'il est au cas sujet ou au cas régime\parencite{de_valeriola_lordinateur_2021}. Le cas sujet et le cas régime sont des cas grammaticaux hérités du latin qui, aujourd'hui, ont disparu en tant que tels dans la langue française actuelle \parencite{kalm_roland_2009}.
 Cette déclinaison se manifeste par l'ajout d'une \textit{marque casuelle} \og -s \fg{} au prénom. Ainsi, \og Joséphé \fg{} peut devenir \og Joséphés \fg{} si celui-ci est sujet. Toutefois, la présence de la marque n'est pas systématique dans les noms de personnes \parencite{mazziotta_marquage_2014}.
-Ensuite, certains patronymes provenant de noms de métier ou de qualificatifs peuvent être dérivés au féminin lorsqu'ils sont portés par des femmes. On retrouve par exemple dans le registre un Druion Le Maçon, une Margritain Le Maçonnesse et  une Alis Le Maçone qui devaient probablement venir de la même famille bien que leur patronyme ne soit pas exactement identique. Également, la région n'étant pas exclusivement francophone, certains patronymes sont traduits, tantôt en picard, tantôt en flamand. Finalement, on retrouve de petites variations graphiques, sans doute dues à une certaine proximité phonétique \parencite{de_valeriola_lordinateur_2021}.
+Ensuite, certains patronymes provenant de noms de métier ou de qualificatifs peuvent être dérivés au féminin lorsqu'ils sont portés par des femmes. On retrouve par exemple dans le registre un Druion Le Maçon, une Margritain Le Maçonnesse et  une Alis Le Maçone qui doivent probablement venir de la même famille bien que leurs patronymes ne soient pas exactement identiques. Également, la région n'étant pas exclusivement francophone, certains patronymes sont traduits, tantôt en picard, tantôt en flamand. Finalement, on retrouve de petites variations graphiques, sans doute dues à une certaine proximité phonétique \parencite{de_valeriola_lordinateur_2021}.
 
 %méthode calcul de distance
 La stratégie adoptée pour identifier les différentes variantes graphiques que peut prendre un même anthroponyme s'inspire, une nouvelle fois, grandement d'un article de S. De Valeriola, dans lequel il cherche à regrouper les différentes graphies de patronymes des protagonistes et témoins au sein d'actes urbains des villes du nord de la France et de Flandre, de manière semi-automatisée \parencite{de_valeriola_lordinateur_2021}.
@@ -74,9 +74,9 @@ En définitive, il a été décidé de calculer la distance sur l'entièreté de
 Ces choix ont été déterminés par une série de tests destinés à observer la quantité de bruit récupérée avec les différentes méthodes. Ceux-ci seront plus amplement détaillés dans le chapitre \textit{Résultats}.
 
 %remplacement dans le dataframe
-Lorsque toute les variants graphiques de chaque anthroponyme sont recensés dans une liste par l'algorithme, cette dernière est alors vérifiée par l'agent humain. Si des erreurs sont remarquées au sein de la liste des groupes, en l'absence de solution de correction automatique, celle-ci est corrigée manuellement.
+Lorsque toutes les variantes graphiques de chaque anthroponyme sont recensées dans une liste par l'algorithme, cette dernière est alors vérifiée par l'agent humain. Si des erreurs sont remarquées au sein de la liste des groupes, en l'absence de solution pour une correction automatique, celle-ci est corrigée manuellement.
 
-La liste vérifiée, toutes les section de rentes du tableau de données principale sont parcourues, et chaque fois qu'une forme variante d'un anthroponymes, qui a été listée, est détectée, celle-ci est un remplacée par une forme généralisée de l'anthroponyme. 
+La liste vérifiée, toutes les sections de rentes du tableau de données principal sont parcourues, et, chaque fois qu'une forme variante d'un anthroponyme, ayant été préalablement listée, est rencontrée, celle-ci est  remplacée par une forme généralisée de l'anthroponyme. 
 
 \begin{figure} % insère une figure ici (h = "here")
     \centering

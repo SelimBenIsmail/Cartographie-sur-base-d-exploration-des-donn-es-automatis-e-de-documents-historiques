@@ -3,13 +3,13 @@ Le mémoire décrit le développement d'un système traduisant un document histo
 
 \subsection{Nettoyage des erreurs d'\textit{OCR} et de typographies}
 %intro
-Dans cadre de ce mémoire, une retranscription du registre de rentes en format  \textit{word(.docx)} a été fournie par % ...%. 
+Dans cadre de ce mémoire, une retranscription du registre de rentes en format  \textit{word(.docx)} a été fournie par Thomas Brunner.
 .Cette retranscription est relativement propre et contient assez peu d'erreurs résiduelles d'\textit{OCR} ou de typographies. Elle était donc utilisable sans qu'il faille passer par une phase de correction préalable. S'il avait fallu utiliser une version provenant directement de l'\textit{OCRisation} du livre de G.Espinas, ce nettoyage aurait été très certainement nécessaire. 
 
-La correction des erreurs d'\textit{OCR} se base généralement sur des approches statistiques nécessitant des corpus de la langue cible. Si l'on considère l'approche d'utiliser uniquement les données provenant du livre, qui a caractérisé l'intégralité du travail, je suggère une stratégie similaire à celle adoptée pour le regroupement des anthroponymes.
+La correction des erreurs d'\textit{OCR} se base généralement sur des approches statistiques nécessitant des corpus de la langue dont il est question. Si l'on considère l'approche d'utiliser uniquement les données provenant du livre, qui a caractérisé l'intégralité du travail, je suggère une stratégie similaire à celle adoptée pour le regroupement des anthroponymes.
 
 %analyse des besoins%
-L'entièreté du texte n'a pas besoin d'être corrigé pour être utilisable, mais seulement certaines expressions servant à la reconnaissance de la structure du texte par les algorithmes d'extractions de l'information ainsi que les valeurs (les erreurs au sein des noms d'entités nommées sont, en toute logique, corrigées lors de la phase de regroupement des anthroponymes). Dans les expressions liées à la structure du texte, on retrouve par exemple l'expression <<\textit{ki sient entre}>> (et ses variantes), qui dans le texte sépare le débit-rentier de ses voisins ou  les expressions <<\textit{dou fond de la tiere}>> et <<\textit{aprés le fond de la tiere}>>  qui permettent d'identifier le montant et la nature de la rente à verser au débit-créancier, tandis que dans les <<valeurs>> on va retrouver les différentes utilisées pour régler le payement, par exemple % ... %.
+L'entièreté du texte n'a pas besoin d'être corrigé pour être utilisable, mais seulement certaines expressions servant à la reconnaissance de la structure du texte par les algorithmes d'extractions de l'information ainsi que les valeurs (les erreurs au sein des noms d'entités nommées sont, en toute logique, corrigées lors de la phase de regroupement des anthroponymes). Dans les expressions liées à la structure du texte, on retrouve par exemple l'expression <<\textit{ki sient entre}>> (et ses variantes), qui dans le texte sépare le débiteur de ses voisins ou  les expressions <<\textit{dou fond de la tiere}>> et <<\textit{aprés le fond de la tiere}>>  qui permettent d'identifier le montant et la nature de la rente à verser au créancier, tandis que dans les <<valeurs>> on va retrouver les différentes espèces utilisées pour régler le payement, par exemple le marc, le fierton, le sous douysiens, les capon ou encore les coupes des différentes céréales.
 
 %stratégie%
 Je suggère donc de créer manuellement une liste de ces différentes expressions. Et une fois le fichier importé dans \textit{RStudio} et son contenu textuel transformé en un vecteur, de fusionner les éléments par petits groupes en fonction de l'expression que l'on cherche à corriger (par cinq pour l'expression <<\textit{ki sient entre}>> par exemple). 
@@ -17,10 +17,23 @@ Ensuite, calculer la distance Damerau-Levensthein\footnote{La distance Damerau-L
 %conclusion
 Cette stratégie nécessiterait un temps de calcul considérable mais présenterait l'avantage d'être automatisée et de ne nécessiter aucune ressource extérieures.
 
-\subsection{Mise en place d'un système de table de données}
+\subsection{Gestion de l'information}
 %système de table de données
+Dans le système développé, la gestion de l'information consiste  principalement en ce qu'on pourrait rapprocher d'une consolidation des données\footnote{La documentation technique de IBM définit la consolidation comme telle : <<La consolidation des données est le processus par lequel un enregistrement de source de données non consolidé est lié à ou fusionné avec un autre enregistrement de données principal. Le processus de consolidation des données peut aboutir à la création d'un nouvel enregistrement de données principal ou à la liaison de l'enregistrement de données source à un enregistrement de données principal existant>> \fullcite[url: https://www.ibm.com/docs/fr/strategicsm/10.1.1?topic=master-data-mastering]{noauthor_ibm_2021}}. Le tableau de données principal \textit{df\_main} est assemblé par la consolidation de multiples tables d'enregistrements sources obtenues lors de la segmentation (\textit{df\_rentes}, \textit{df\_connetablies}, \textit{df\_escroetes}) et chaque que fois qu'un ensemble de données est requis, une partie du tableau de données \textit{df\_main} est copié pour créer un nouveau tableau de données ou un nouveau vecteur de données. Cette stratégie de gestion des données  a été utilisée parce qu'elle est intuitive, aisée à mettre en place et , surtout, suffisante.
+
+Cependant, cette gestion est quelque peu rigide :  les enregistrements sources doivent être mises à jours lorsque les données consolidées sont modifiées. Ceci implique la duplication d'un grand nombre de données et que si un enregistrement source comporte des anomalies, celle-ci seront propagées dans les nouveaux enregistrements et si plusieurs processus de consolidation se suivent,  la correction peuvent devenir vite laborieuse \parencite{boydens_qualite_2021}. Dans le cas où  les enregistrements sources ne sont pas mis à jour, comme ça l'est pour les tableaux  \textit{df\_rentes}, \textit{df\_connetablies} et \textit{df\_escroetes}, la mémoire du système s'encombrerait de nombreuses données obsolètes.
+
+Un système de table de données \textit{SQL}  reliées par des clés étrangères permettrait serait une option plus lourde à mettre en place, mais qui permettrait une centralisation des données. 
+
+Il s'agit ici d'une amélioration mineur, voire anodine,  car dans le cas qui est le nôtre, le volume de données n'est pas assez conséquent pour que cela ait un impact notable. Toute foi, la gestion des données est un aspect important des systèmes d'information et il parait bon d'au moins évoquer les bonnes pratiques d'un point de vue théorique, même si il ne sont pas forcément nécessaire dans l'élaboration d'un prototype.
+
 \subsection{Amélioration de la qualité des données}
 %amélioration de la qualité des données
+
+
+
+
+
 \subsubsection{Regroupement des anthroponymes}
 Comme déjà discuté, le regroupement d'anthroponymes est une problématique complexe qui ne trouve actuellement aucune solution générale parfaite dans la littérature. Il est par conséquent nécessaire d'apporter des modifications à ces solutions imparfaites pour les rendre plus adéquates au spécificités du contexte étudié.
 
@@ -34,7 +47,9 @@ De cela, découle deux suppositions qui devront être considérées afin de dimi
 \end{itemize}
 
 Une autre approche pour améliorer la reconnaissance et regroupement d'anthroponymes serait de coupler avec d'autres sources ou base de données et d'envisager une stratégie orientée connaissance.
-Finalement, il reste toujours la possibilité d'améliorer l'algorithme de calcul des distances en modulant le poids des opérations dans des cas précis (diminuer le poids de l'ajout ou de la suppression d'un espace pour alléger le score des particules dans les patronymes, par exemple). Ceci nécessite d'effectuer de nombreux essaies et analyses qui sont lourdes en terme de ressources informatiques\footnote{Pour calculer les distances séparant chacune des 799 formes d'anthroponymes capturées entre-elles, l'ordinateur a travaillé pendant presque une heure}, mais l'informatique quantique, qui se fait de plus en plus accessible via des options de \textit{cloud computing}, devrait améliorer notablement la vitesse d'exécution de ce type de calcul. 
+
+
+Finalement, il reste toujours la possibilité d'améliorer l'algorithme de calcul des distances en modulant le poids des opérations dans des cas précis (diminuer le poids de l'ajout ou de la suppression d'un espace pour alléger le score des particules dans les patronymes, par exemple). Ceci nécessite d'effectuer de nombreux essais conséquents en terme de puissance de calcul\footnote{Pour déterminer les distances séparant chacune des 799 formes d'anthroponymes entre-elles, l'ordinateur a calculé pendant presque une heure}, mais des alternatives existent pour améliorer la vitesse d'exécution de ce type de calcul et elles sont de plus en plus accessibles via le \textit{cloud computing}. On peut citer à titre d'exemple, la parallélisation du code, ou dans un avenir plus lointain, lorsque la technologie aura gagnée en précision et en capacité de mémoire, l'informatique quantique.
 
 \subsubsection{Enrichissement des  données}
 \subsection{Extension du projet}
@@ -42,3 +57,7 @@ Finalement, il reste toujours la possibilité d'améliorer l'algorithme de calcu
 %dispersion des patronymes
 %évolution de l'empire immobilier de JdF  en couplant l'avec l'analyse des actes notariés du livre de G.Espinas
 %amélioration du code
+
+% map interactive avec leaflet package "cartography" + rajouter les éléments de sémiologie cartographique 
+
+%Pondérer le poids des arêtes en fonction  de la proximité des rentes dans le registre (et éventuellement faire des communautés ) pour déterminer les arête foireuses (pb de sommets doublons)

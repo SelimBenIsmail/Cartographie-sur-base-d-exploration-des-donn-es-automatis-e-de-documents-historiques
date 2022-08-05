@@ -2,8 +2,12 @@
 \begin{document}
 %page de garde
 \input{0.AvantPropos/page_de_garde}
+\newpage
+\strut % ou ~ ou \mbox{} ou \null
+\newpage
 %remerciements
 \input{0.AvantPropos/remerciements}
+
 %table des matières
 \setstretch{1,5}
 \tableofcontents
@@ -36,6 +40,7 @@
 \input{4.Discussion/D.ameliorations}
 \input{4.Discussion/E.conclusion}
 %Annexes
+\begin{appendices}
 \input{5.Appendix/appendix}
-
+\end{appendices}
 \end{document}
