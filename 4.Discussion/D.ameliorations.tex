@@ -1,63 +1,35 @@
 \section{Pistes d'améliorations}
-Le mémoire décrit le développement d'un système traduisant un document historique textuel en cartographie. Le processus par lequel passe le document est long  et traverse nombreux champs des technologie de l'information et des humanités numériques. Dans le cadre de ce  mémoire, qui est avant tout un prototype, un \textit{proof of concept}, ces aspects n'ont pu être explorés que dans une profondeur relative, voire de manière très superficielle pour certain. De fait, les pistes d'amélioration du système sont très nombreuses.
+Le mémoire a décrit le développement d'un système traduisant un document historique textuel en cartographie. Le processus par lequel passe le document est long  et traverse nombreux champs des technologie de l'information et des humanités numériques. Dans le cadre de ce  mémoire, qui est avant tout un prototype, un \textit{proof of concept}, ces aspects n'ont pu être explorés que dans une profondeur relative, voire de manière très superficielle pour certain. De fait, les pistes d'amélioration du système sont très nombreuses.
 
-\subsection{Nettoyage des erreurs d'\textit{OCR} et de typographies}
-%intro
-Dans cadre de ce mémoire, une retranscription du registre de rentes en format  \textit{word(.docx)} a été fournie par Thomas Brunner.
-.Cette retranscription est relativement propre et contient assez peu d'erreurs résiduelles d'\textit{OCR} ou de typographies. Elle était donc utilisable sans qu'il faille passer par une phase de correction préalable. S'il avait fallu utiliser une version provenant directement de l'\textit{OCRisation} du livre de G.Espinas, ce nettoyage aurait été très certainement nécessaire. 
 
-La correction des erreurs d'\textit{OCR} se base généralement sur des approches statistiques nécessitant des corpus de la langue dont il est question. Si l'on considère l'approche d'utiliser uniquement les données provenant du livre, qui a caractérisé l'intégralité du travail, je suggère une stratégie similaire à celle adoptée pour le regroupement des anthroponymes.
 
-%analyse des besoins%
-L'entièreté du texte n'a pas besoin d'être corrigé pour être utilisable, mais seulement certaines expressions servant à la reconnaissance de la structure du texte par les algorithmes d'extractions de l'information ainsi que les valeurs (les erreurs au sein des noms d'entités nommées sont, en toute logique, corrigées lors de la phase de regroupement des anthroponymes). Dans les expressions liées à la structure du texte, on retrouve par exemple l'expression <<\textit{ki sient entre}>> (et ses variantes), qui dans le texte sépare le débiteur de ses voisins ou  les expressions <<\textit{dou fond de la tiere}>> et <<\textit{aprés le fond de la tiere}>>  qui permettent d'identifier le montant et la nature de la rente à verser au créancier, tandis que dans les <<valeurs>> on va retrouver les différentes espèces utilisées pour régler le payement, par exemple le marc, le fierton, le sous douysiens, les capon ou encore les coupes des différentes céréales.
+\subsection{Qualité des cartographies}
+L'un des premier aspect qui nécessiterait d'être amélioré est la qualité des cartographies produite. L'outil que nous avons utilisé, \textit{ggmap}, à l'avantage d'être une extension de \textit{ggplot2} et d'offrir une grammaire graphique similaire en plus d'être facilement pris en main. Malheureusement, nous sommes rapidement bloqués par les limite de la bibliothèque qui ne permet pas de respecter les règles de bases de la représentation cartographique\footnote{Il est par exemple impossible d'afficher l'orientation du Nord ou l'échelle des distances.}. 
+Les bibliothèques \textit{cartography} et \textit{lieflet} semblent être des alternatives, certes, plus complexes à maîtriser, mais apportant une solution plus complète pour la production de cartographies plus élaborées.
+En outre, \textit{leaflet} permet la création de cartes interactives qui pourrait s'avérer intéressantes au vu de la quantité de données à afficher.
 
-%stratégie%
-Je suggère donc de créer manuellement une liste de ces différentes expressions. Et une fois le fichier importé dans \textit{RStudio} et son contenu textuel transformé en un vecteur, de fusionner les éléments par petits groupes en fonction de l'expression que l'on cherche à corriger (par cinq pour l'expression <<\textit{ki sient entre}>> par exemple). 
-Ensuite, calculer la distance Damerau-Levensthein\footnote{La distance Damerau-Levansthein sans les modifications de pondération apportées dans le cadre du regroupement des anthroponymes} entre l'expression testée et tous les éléments du vecteur, puis à remplacer par l'expression testée, ceux dont la distance est inférieure à un seuil préétabli. %exemple en annexe%
-%conclusion
-Cette stratégie nécessiterait un temps de calcul considérable mais présenterait l'avantage d'être automatisée et de ne nécessiter aucune ressource extérieures.
+
+\subsection{Pondération des arêtes}
+Un aspect des graphes qui n'a pas été étudié au cours de ce mémoire est la pondération des arêtes. Pourtant celle-ci pourrait résoudre le problème engendré par les individus débiteurs de plusieurs rentes et qui doivent, par conséquent,  être modéliser en différents sommets. Nous savons que les rentes sont classées dans le registre en suivant une continuité topographique. Une affirmation qui peut être observé également sur les cartes  produites. 
+Donc en affectant le numéro de rente successive comme valeur aux arêtes, puis en affectant aux sommets, la valeur moyenne des arêtes qui lui sont incidentes, les arêtes erronés devraient pouvoir être identifiées par la taille de l'écart entre leur poids et celui des sommets auxquels elles sont connectées. Ceci n'est évidemment qu'un exemple théorique de l'utilisation qu'il pourrait être de faire de la pondération des arêtes du graphe.
+
+\subsection{Regroupement des anthroponymes}
+Le regroupement d'anthroponymes est une problématique complexe qui ne trouve actuellement aucune solution générale parfaite dans la littérature, il en demeure   pourtant un aspect primordiale dans ce type de d'analyses. Il est par conséquent nécessaire d'apporter des modifications à ces solutions imparfaites pour les rendre plus adéquates aux spécificités du contexte étudié.
+
+Une première approche pour améliorer la reconnaissance et regroupement d'anthroponymes serait de coupler avec d'autres sources ou base de données et d'envisager une stratégie orientée connaissance pour créer un  dictionnaire de différentes graphies.
+
+Une autre approche est d'améliorer l'algorithme de calcul des distances en modulant le poids des opérations lors de cas précis (diminuer le poids de l'ajout ou de la suppression d'un espace pour alléger le score des particules dans les patronymes, par exemple). Cela nécessiterait d'effectuer de nombreux essais conséquents en terme de puissance de calcul\footnote{Pour déterminer les distances séparant chacune des 799 formes d'anthroponymes entre-elles, l'ordinateur a calculé pendant presque une heure}, mais des alternatives existent pour améliorer la vitesse d'exécution de ce type de calcul et elles sont de plus en plus accessibles via le \textit{cloud computing}. On peut citer à titre d'exemple, la parallélisation du code, ou dans un avenir plus lointain, peut-être, l'informatique quantique, lorsque cette technologie aura gagnée en précision et en capacité de mémoire.
 
 \subsection{Gestion de l'information}
 %système de table de données
-Dans le système développé, la gestion de l'information consiste  principalement en ce qu'on pourrait rapprocher d'une consolidation des données\footnote{La documentation technique de IBM définit la consolidation comme telle : <<La consolidation des données est le processus par lequel un enregistrement de source de données non consolidé est lié à ou fusionné avec un autre enregistrement de données principal. Le processus de consolidation des données peut aboutir à la création d'un nouvel enregistrement de données principal ou à la liaison de l'enregistrement de données source à un enregistrement de données principal existant>> \fullcite[url: https://www.ibm.com/docs/fr/strategicsm/10.1.1?topic=master-data-mastering]{noauthor_ibm_2021}}. Le tableau de données principal \textit{df\_main} est assemblé par la consolidation de multiples tables d'enregistrements sources obtenues lors de la segmentation (\textit{df\_rentes}, \textit{df\_connetablies}, \textit{df\_escroetes}) et chaque que fois qu'un ensemble de données est requis, une partie du tableau de données \textit{df\_main} est copié pour créer un nouveau tableau de données ou un nouveau vecteur de données. Cette stratégie de gestion des données  a été utilisée parce qu'elle est intuitive, aisée à mettre en place et , surtout, suffisante.
+La gestion des données est un aspect important de tout systèmes d'informations.
+Dans le système développé, elle consiste principalement en ce qu'on pourrait rapprocher d'une consolidation des données\footnote{<< La consolidation des données est le processus par lequel un enregistrement de source de données non consolidé est lié à ou fusionné avec un autre enregistrement de données principal. Le processus de consolidation des données peut aboutir à la création d'un nouvel enregistrement de données principal ou à la liaison de l'enregistrement de données source à un enregistrement de données principal existant >> \fullcite[url: https://www.ibm.com/docs/fr/strategicsm/10.1.1?topic=master-data-mastering]{noauthor_ibm_2021}}. Le tableau de données principal \textit{df\_main} est assemblé par la consolidation de multiples tables d'enregistrements sources obtenues lors de la segmentation (\textit{df\_rentes}, \textit{df\_connetablies}, \textit{df\_escroetes}). Chaque que fois qu'un ensemble de données est requis, une partie du tableau de données \textit{df\_main} est copié pour créer un nouveau tableau ou vecteur de données. Cette stratégie de gestion des données  a été utilisée parce qu'elle est intuitive, aisée à mettre en place et, surtout, suffisante.
 
 Cependant, cette gestion est quelque peu rigide :  les enregistrements sources doivent être mises à jours lorsque les données consolidées sont modifiées. Ceci implique la duplication d'un grand nombre de données et que si un enregistrement source comporte des anomalies, celle-ci seront propagées dans les nouveaux enregistrements et si plusieurs processus de consolidation se suivent,  la correction peuvent devenir vite laborieuse \parencite{boydens_qualite_2021}. Dans le cas où  les enregistrements sources ne sont pas mis à jour, comme ça l'est pour les tableaux  \textit{df\_rentes}, \textit{df\_connetablies} et \textit{df\_escroetes}, la mémoire du système s'encombrerait de nombreuses données obsolètes.
 
 Un système de table de données \textit{SQL}  reliées par des clés étrangères permettrait serait une option plus lourde à mettre en place, mais qui permettrait une centralisation des données. 
 
-Il s'agit ici d'une amélioration mineur, voire anodine,  car dans le cas qui est le nôtre, le volume de données n'est pas assez conséquent pour que cela ait un impact notable. Toute foi, la gestion des données est un aspect important des systèmes d'information et il parait bon d'au moins évoquer les bonnes pratiques d'un point de vue théorique, même si il ne sont pas forcément nécessaire dans l'élaboration d'un prototype.
+Il s'agit ici d'une amélioration,à primineur, voire anodine, car dans le cas qui est le nôtre, le volume de données n'est pas assez conséquent pour que cela ait un impact notable. Toute foi, 
 
-\subsection{Amélioration de la qualité des données}
-%amélioration de la qualité des données
+Il s'agit ici d'une amélioration, qui peut sembler mineur, voire anodine, car dans le cas qui est le nôtre, le volume de données n'est pas assez conséquent pour que cela ait un impact notable. Toute foi, si le système est repris à l'avenir et élargi afin de traiter plus de sources, cette négligence concernant la gestion des données pourrait engendrés des alourdissement du système.
 
-
-
-
-
-\subsubsection{Regroupement des anthroponymes}
-Comme déjà discuté, le regroupement d'anthroponymes est une problématique complexe qui ne trouve actuellement aucune solution générale parfaite dans la littérature. Il est par conséquent nécessaire d'apporter des modifications à ces solutions imparfaites pour les rendre plus adéquates au spécificités du contexte étudié.
-
-Afin d'améliorer la méthode employée, il a été envisagé de coupler le calcul de distance avec des éléments extraient lors de la segmentation tels que le numéro de rente ou la connétablie. Cette idée nait  de deux constats.
-Le premier est que les rentes sont, pour la quasi totalité, classées dans le registre selon un ordre topographique. Le second, est qu'une fois les rentes nettoyées des expressions <<ki fu + anthroponyme>> (et de leurs variantes), les personnages sont, à priori, mentionnés, soit en tant que de débitrentier habitants des propriétés faisant l'objet de la rente, soit en tant qu'habitant des propriétés mitoyennes à la rente. Par conséquence, une même personne ne devrait pas être mentionnée dans différentes rentes éloignées géographiquement. 
-Malheureusement, cette hypothèse se voit être réfutée par l'analyse du graphe  qui nous montre des sommets avec des degrés très élevé, jusqu'à 10 pour \textit{Richart Pourciel}\footnote{Une recherche en \textit{plein texte} dans le document source nous confirme qu'il y a effectivement des mentions de cet individu dans différentes connétablies et qu'il ne s'agit pas d'une erreur d'un des algorithmes}.
-De cela, découle deux suppositions qui devront être considérées afin de diminuer les erreurs au sein du système. 
-\begin{itemize}
-    \item Certain de personnage peuvent être débiteur de plusieurs rentes immobilière. 
-    \item Plusieurs individus partagent le même anthroponyme, soit des cas d'homonymies.
-\end{itemize}
-
-Une autre approche pour améliorer la reconnaissance et regroupement d'anthroponymes serait de coupler avec d'autres sources ou base de données et d'envisager une stratégie orientée connaissance.
-
-
-Finalement, il reste toujours la possibilité d'améliorer l'algorithme de calcul des distances en modulant le poids des opérations dans des cas précis (diminuer le poids de l'ajout ou de la suppression d'un espace pour alléger le score des particules dans les patronymes, par exemple). Ceci nécessite d'effectuer de nombreux essais conséquents en terme de puissance de calcul\footnote{Pour déterminer les distances séparant chacune des 799 formes d'anthroponymes entre-elles, l'ordinateur a calculé pendant presque une heure}, mais des alternatives existent pour améliorer la vitesse d'exécution de ce type de calcul et elles sont de plus en plus accessibles via le \textit{cloud computing}. On peut citer à titre d'exemple, la parallélisation du code, ou dans un avenir plus lointain, lorsque la technologie aura gagnée en précision et en capacité de mémoire, l'informatique quantique.
-
-\subsubsection{Enrichissement des  données}
-\subsection{Extension du projet}
-%montant des rentes
-%dispersion des patronymes
-%évolution de l'empire immobilier de JdF  en couplant l'avec l'analyse des actes notariés du livre de G.Espinas
-%amélioration du code
-
-% map interactive avec leaflet package "cartography" + rajouter les éléments de sémiologie cartographique 
-
-%Pondérer le poids des arêtes en fonction  de la proximité des rentes dans le registre (et éventuellement faire des communautés ) pour déterminer les arête foireuses (pb de sommets doublons)

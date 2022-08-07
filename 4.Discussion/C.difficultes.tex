@@ -1,7 +1,8 @@
 \section{Difficultés rencontrées}
 %difficulté document historique
-Le travail s'est heurté aux difficultés inhérentes à toutes études de documents historiques.
-Ces difficultés peuvent  être partagées en deux catégories : celles intrinsèques au contenu du document et celles issues du support du document. 
+
+\subsection{La complexité du document historique}
+Le travail s'est heurté aux difficultés inhérentes à toutes études de documents historiques. Ces difficultés peuvent  être partagées en deux catégories : celles intrinsèques au contenu du document et celles issues du support du document. 
 
 Dans la première catégorie, se retrouve les problèmes d'incompréhensions et de confusions liés au vocabulaire, aux glissements sémantiques aux variantes de graphies, ou à la langue utilisée \parencite{piotrowski_natural_2012}.
 Notre document, le rentier de Jean de France, est écris en picard médiéval ; une langue relativement proche de l'ancien français. De part ses racines, cette langue possède de grandes ressemblances avec notre français contemporain et permet par conséquent, dans une certaine mesure, une compréhension relative de celle-ci à n'importe quel profane francophone.
@@ -12,10 +13,28 @@ L'exemple le plus parlant de cette difficulté est le traitement de l'expression
 La seconde catégories regroupe les difficultés issue du support du document. 
 En l'occurrence, notre document est passée d'un format physique en papier en documents texte par plusieurs étapes intermédiaires, chacune entraînant une série d'altérités du document original (erreurs de typographie, d'\textit{OCR}, de transcription , etc...). \footnote{L'historique du document ayant été  largement traité dans le chapitre \textit{Méthodes}, nous n'enterons pas plus dans le détail dans cette partie-ci.}
 
+\subsection{L'enjeux de la qualité des données}
+L'autre principal obstacle auquel le travail s'est confronté, est la dégradation progressive de la qualité des données.
+La stratégie adoptée, qui s'appuie sur l'utilisation d'expressions régulières offre l'avantage de permettre une automatisation des processus sans avoir à recourir aux approches orientées connaissance ou aux approches orientées données. Néanmoins, elle dévoile aussi certain inconvénients : sa forte rigidité face aux exceptions rencontrées et la fragilisation du système que cela implique. Tous les cas possibles doivent être anticipés et préparés car la moindre irrégularité dans la forme des données traitées entraîne, au mieux, une perte de données, au pire, la corruption d'autres données. Dans le cas de données semi-structurées et non-structurées telles que celles extrait du registre de rentes cela s'avère donc relativement délicat. Bien que le registre soit organisé et présente un certain formalisme dans les énoncés de ces rentes, on y trouve encore de nombreuses d'irrégularités, nous forçant à adapter le code à chacune d'elles. 
 
+La phase de segmentation retourne un ensemble de données relativement correct et suffisant pour poursuivre les phases suivantes.
 
+C'est à partir de là, que la qualité des données commence à diminuer, et ce, pour plusieurs causes.
 
+Dans un premier temps, on retrouve des erreurs arrivées dans le tableau de données lors de la segmentation, celles-ci trouvent parfois leurs origines dans le document source lui-même, comme lorsqu'il s'agit d'erreurs de typographie, d'\textit{OCR}.
+Dans d'autres cas, il s'agit des algorithmes qui ne sont pas parfaitement adaptés et qui capturent une chaîne de caractères tronquée ou inadéquate après avoir rencontré une irrégularité dans la morphologie d'une expression, d'un noms ou d'une formule.
+Ces erreurs peuvent ensuite se répercuter dans le reste du système. Certaines sont bénignes, mais d'autres vont s'amplifier au fur et à mesure du processus et finir par causer d'importantes pertes de données. 
 
-%surnoms (e.g. le tenement des malades)
-%probleme des rentes multiples pour un meme anthroponyme //homonymie
-%obtention des carte en opensource : qualité médiocre ou tuiles manquantes à partir d'un certain degré de zoom
+Ensuite, on retrouve une perte de la qualité des donnés suite au tronquage de celles-ci. Comme il en a déjà été discuté, nous avons estimé le silence moins néfaste que le bruit, dès lors, une partie des données s'est vu être tronquée afin de réduire le risque d'assimiler des données fausses ou conflictuelles. A nouveau, ces pertes d'informations peuvent possiblement en entraîner d'autres, car parmi les données rejetées, certaines auraient potentiellement pu servir à enrichir le tableau de données des sommets. Au terme du processus, même s'il s'agit d'un choix délibéré, on ne peut que déplorer la perte de cette quantité de données.
+
+Il est assez difficile d'évaluer l'impact réel qu'à pu avoir cette diminution progressive de la qualité des données sur les résultats finaux obtenus en sortie du système. Celle-ci n'a pas été le facteur le plus limitant quo a été rencontré, mais reste,  sans équivoque, un enjeux prépondérant.
+
+\subsection{Problèmes mineurs rencontrés}
+
+Quelques autre problèmes ont été également rencontrés. Ils ont des répercussions moindre par rapports à ceux discutés précédemment, mais il convient tout de même de les évoquer.
+
+Tout d'abord, l'observation de différents tableaux et du graphe a permis de mettre en évidence  qu'un même individu pouvait être débiteur de plusieurs biens. Un aspect de la réalité qui, bien qu'il puisse paraître évidement, a été négligé lors du développement et qui engendre des erreurs ponctuelles dans le graphe (toutes les occurrences d'un même anthroponyme étant modélisé par un unique sommet, alors que ces dernier sont censés correspondre à un emplacement géographique précis).
+Une erreur de compréhension du document source et du contexte étudié, qui est finalement  symptomatique des difficultés évoquées plus haut.
+Malgré cela, le graphe n'ayant pas été transposé sur le fond de carte et la règle définie pour l'enrichissement du tableau de données des sommets, ces erreurs n'ont pu avoir que assez peu d'incidence. 
+
+Un second problème mineur rencontré est celui des ressources cartographiques disponibles. D'une part, une alternative opensource à du être employée suite à la tarification de l'\textit{API} de \textit{Google Maps}. Malheureusement, le catalogue de cette alternative ne propose pas de fonds de cartes de haute résolution pour la région de Douai. D'autre part, il ne semble pas exister de fond carte << historique >>, or la topographie des lieux à drastiquement changé depuis le Moyen Âge.
