@@ -1,9 +1,13 @@
 \input{Settings/parametres}
 \begin{document}
 %page de garde
-\input{0.AvantPropos/page_de_garde}
+\includepdf{0.AvantPropos/Img/pg.pdf}
+\newpage
+\includepdf[pages=-last]{0.AvantPropos/Img/consult.pdf}
 \newpage
 \input{0.AvantPropos/résumé}
+\newpage
+\strut % ou ~ ou \mbox{} ou \null
 \newpage
 %remerciements
 \input{0.AvantPropos/remerciements}
@@ -38,6 +42,8 @@
 \input{4.Discussion/C.difficultes}
 \input{4.Discussion/D.ameliorations}
 \input{4.Discussion/E.conclusion}
+% bibliographie
+\input{5.Appendix/bibliography}
 %Annexes
 \begin{appendices}
 \input{5.Appendix/appendix}
