@@ -1,15 +1,15 @@
 \section{Extraction des relations}
-L'extraction des relations est une nouvelle phase d'extraction de l'information. Mais celle-ci ne peut avoir lieu qu'après la normalisation des formes variantes des anthroponymes, résultant de la phase de regroupement des anthroponymes.
+L'extraction des relations est une nouvelle phase d'extraction de l'information. Celle-ci ne peut avoir lieu qu'après la normalisation des graphies variantes des anthroponymes, qui résulte de la phase de regroupement des anthroponymes.
 Le registre des rentes ayant été préalablement découpé en rentes, l'objectif de cette opération consiste à déterminer les liens qui unissent les différents individus détectés au sein d'un énoncé de rente.
 
-Les énoncés des rentes présentent un certain formalisme dans leur structure, on peut retrouver le motif suivant dans la quasi totalisé des énoncés: 
+Les énoncés des rentes présentent un certain formalisme dans leur structure. Nous pouvons y retrouver le motif suivant dans la presque totalité : 
 \begin{enumerate}
 \item L'objet de la rente +  \textbf{anthroponyme du débiteur de la rente}
 \item << \textbf{ki siet entre}>> ou une variante proche de cette expression
 \item <<le tènement>> +  \textbf{anthroponyme du premier voisin } + << d'une part>> 
 \item << et le tènement >> + \textbf{anthroponyme du second voisin} + << d'autre part>>
 \end{enumerate}
-Des expressions \textit{<< ki fu >> + anthroponyme} peuvent également apparaître dans ce motif juste après un anthroponyme afin de désigner l'ancien propriétaire de la propriété bâtie ou du tènement. A 24 reprises,à la fin de l'énoncé de la rente, apparaissent également,  les formules <<\textit{Si fu li}>> ou <<\textit{Si fu cist}>>, suivi d'un montant et d'un anthroponyme. Le sens exact de cette partie de l'énoncé nous échappe, mais il semble --- au vu du verbe <<fu>>,  qui correspond à une forme du passé du verbe \textit{être} --- évident qu'elle n'indique pas l'individu mentionné comme voisin du débiteur de la rente. Afin de ne pas créer de fausses relations entre les personnages, il paraît évident qu'il faudra nettoyer les rentes de ces éventuels expressions.
+Des expressions \textit{<< ki fu >> + anthroponyme} peuvent également apparaître dans ce motif juste après un anthroponyme. Celle-ci semble désigner l'ancien propriétaire de la propriété bâtie ou du tenement. A 24 reprises,à la fin de l'énoncé de la rente, apparaissent également,  les formules <<\textit{Si fu li}>> ou <<\textit{Si fu cist}>>, suivies d'un montant et d'un anthroponyme. Le sens exact de cette partie de l'énoncé nous échappe, mais il semble --- au vu du verbe <<fu>>,  qui correspond à une forme du passé du verbe \textit{être} --- évident qu'elle n'indique pas l'individu mentionné comme voisin du débiteur de la rente. Afin de ne pas créer des relations erronées entre les individus, les énoncés des rentes seront nettoyés de ces expressions.
 
 %nettoyage
 Dans un premier temps, la colonne du tableau de données principal contenant les énoncés de rentes est copiée dans un nouveau vecteur <<\textit{rentes}>> afin de ne pas altérer les données de référence. Ensuite, de sorte qu'il ne reste plus que les anthroponymes du débiteur et de ses voisins, les rentes sont nettoyées des éventuelles expressions évoquant les anciens propriétaires grâce à la fonction \textit{str\_remove()} et à l'assemblage des deux expressions régulières suivantes : 
@@ -26,15 +26,15 @@ Dans un premier temps, la colonne du tableau de données principal contenant les
 
 
 %explication regex
-La première, capture l'expression <<\textit{ki fu}>> et sa forme au pluriel <<\textit{ki furent}>> ainsi que les éventuels titres ou statuts de <<femme>>, <<maistre>> ou <<vallés>> qui, s'ils ne sont pas pris en compte, bloquent la seconde expression régulière. La seconde expression régulière est celle de la détection des anthroponymes écrite par S. De Valeriola, mais adaptée au cas des lettres capitales.
+La première capture l'expression <<\textit{ki fu}>> et sa forme au pluriel <<\textit{ki furent}>> ainsi que les éventuels titres ou statuts de <<femme>>, <<maistre>> ou <<vallés>> qui, s'ils ne sont pas pris en compte, bloquent la seconde expression régulière. La seconde expression régulière est celle de la détection des anthroponymes écrite par S. De Valeriola, adaptée au cas des lettres capitales.
 
-Après cela, vient la suppression des expressions <<\textit{Si fu}>> grâce à l'expression régulière suivante : 
+Après cela vient la suppression des expressions <<\textit{Si fu}>> grâce à l'expression régulière suivante : 
 \[ \boxed{ Si \;fu.*\$} \]
-Celle-ci nous permet de capturer la chaîne de caractères <<\textit{Si fu}>> ainsi que tous les caractères suivant jusqu'à la fin de l'énoncé de la rente.
+Celle-ci capture la chaîne de caractères <<\textit{Si fu}>> ainsi que tous les caractères suivant jusqu'à la fin de l'énoncé de la rente.
 
-Les énoncés de rentes, allégées des anthroponymes qui ne nous intéressent pas, il est alors possible de segmenter ceux-ci en deux sous-chaînes autour des expressions <<\textit{Si sient}>>, <<\textit{Si siet}>>, <<\textit{ki sient}>>, <<\textit{ki iet}\footnote{Cette variante provient très certainement d'une erreur de typographie ou d'\textit{OCR}}>>.
+Lorsque les énoncés de rentes sont allégés des anthroponymes non pertinents, il est alors possible de segmenter ces énoncés en deux sous-chaînes de caractères autour des expressions <<\textit{Si sient}>>, <<\textit{Si siet}>>, <<\textit{ki sient}>>, <<\textit{ki iet}\footnote{Cette variante provient très certainement d'une erreur de typographie ou d'\textit{OCR}}>>.
 
-A cette fin, la fonction \textit{str\_locate()} est utilisée avec l'expression régulière :
+À cette fin, la fonction \textit{str\_locate()} est utilisée avec l'expression régulière :
 \[ 
     \boxed{
         \text{
@@ -42,9 +42,9 @@ A cette fin, la fonction \textit{str\_locate()} est utilisée avec l'expression 
         }
     }
 \]
- Cette dernière nous retourne les indices dans la chaîne de caractère (de l'énoncé nettoyé) auxquels corresponds le début et la fin de l'expression recherchée. Ces indices de localisation permet alors d'extraire une sous-chaîne de caractères depuis l'énoncé de la rente à l'endroit voulu, grâce à la fonction \textit{str\_sub()}.
+ Cette dernière nous retourne les indices dans la chaîne de caractère (de l'énoncé nettoyé) auxquels correspondent le début et la fin de l'expression recherchée. Ces indices de localisation permettent alors d'extraire une sous-chaîne de caractères depuis l'énoncé de la rente à l'endroit voulu, grâce à la fonction \textit{str\_sub()}.
  
- Lorsque les deux sous-chaînes sont récupérées, une reconnaissance des anthroponymes est effectuée dans chacune d'elles  et permet d'obtenir l'anthroponyme du débiteur dans la première sous-chaîne, et celui de ces voisins dans la seconde sous-chaîne. Ces relations peuvent alors être mises sous la forme de couples dans un nouveau tableau de données.
+ Lorsque les deux sous-chaînes sont récupérées, une reconnaissance des anthroponymes est effectuée dans chacune d'elles  et permet d'obtenir l'anthroponyme du débiteur dans la première, et celui de ces voisins dans la seconde. Ces relations peuvent alors être mises sous la forme de couples dans un nouveau tableau de données.
  
  \begin{figure} % insère une figure ici (h = "here")
     \centering
@@ -60,32 +60,29 @@ A cette fin, la fonction \textit{str\_locate()} est utilisée avec l'expression 
     \label{schemaNettoyageRelations}
 \end{figure}
  
- A la fin de cette opération, nous récupérons  un tableau de données contenant 499 couples. Parmi ceux-ci, on observe 14 valeurs \textit{ukn} distinctes, affectant un total de 30 couples.
+ À la fin de cette opération, nous récupérons  un tableau de données contenant 499 couples. Parmi ceux-ci, nous observons 14 valeurs \textit{ukn} distinctes, affectant un total de 30 couples.
 
 \subsection{Lever l'inconnue des valeurs manquantes}
-Cependant, ces valeurs inconnues ne sont pas une fatalité :  la commande : 
+Cependant, ces valeurs inconnues ne sont pas une fatalité. La commande R suivante nous permet de trouver les lignes dont il est question.
 \[ df\_links[str\_detect(df\_links\$To,'ukn'),]\]
-nous permet de trouver les lignes dont il est question, et grâce aux anthroponymes connexes à la valeur inconnue, l'agent humain est dans la possibilité de retrouver les valeurs manquantes avec une recherche plein texte depuis le document source. L'analyse de ces valeurs manquantes permet de corriger certain couples qui auraient créé des erreurs dans la modélisation des graphes,  mais elle peux aussi permettre de comprendre les facteurs qui ont engendré cette perte d'information, et amener à leur correction. Le tableau \ref{ukn_node} regroupe les informations récupérées sur les valeurs manquantes après investigation manuelle. Sur les 15 valeurs inconnues, 10 pourront être corrigées manuellement. On observe aussi que, à l'exception du \textit{Ukn11}, toutes proviennent d'irrégularités du document source. Dans une grande partie de ces cas, l'irrégularité fait que l'expression régulière ne détecte pas l'anthroponyme (comme lorsqu'il n'y a seulement un nom de baptême et pas de patronyme, par exemple), dans l'autre partie des cas, l'individu débiteur n'est pas clairement désigné dans l'énoncé de la rente ou  n'est simplement pas une personne (par exemple : L'ospital des Wes).
+ 
+ Grâce aux anthroponymes connexes à la valeur inconnue, l'agent humain est dans la possibilité de retrouver les valeurs manquantes avec une recherche plein texte depuis le document source. L'analyse de ces valeurs manquantes permet de corriger certains couples qui auraient créé des erreurs dans la modélisation des graphes,  mais elle peut aussi permettre de comprendre les facteurs qui ont engendré cette perte d'information, et amener à leur correction. Le tableau \ref{ukn_node} regroupe les informations récupérées sur les valeurs manquantes après une investigation manuelle. Sur les 15 valeurs inconnues, 10 peuvent être corrigées. Nous constatons aussi que, à l'exception du \textit{Ukn11}, toutes proviennent d'irrégularités du document source. Dans une grande partie de ces cas, l'irrégularité fait que l'expression régulière ne détecte pas l'anthroponyme (comme lorsqu'il y a uniquement un nom de baptême et aucun patronyme), dans l'autre partie des cas, l'individu débiteur n'est pas clairement désigné dans l'énoncé de la rente ou  n'est simplement pas une personne (par exemple : L'ospital des Wés).
 \input{3.Results/Tables/ukn_node}
 
-
-
 \subsection{Corrections supplémentaires}
-
-Les rentes étant classées selon un ordre topographique, on observe très souvent un même anthroponyme apparaître dans l'énoncé de deux ou trois rentes successives : une première fois, comme voisin du débiteur de la rente, une seconde fois, comme débiteur de la rente suivante, et une troisième fois, à nouveau comme voisin de la rente après la sienne. Après avoir identifié les individus derrière les valeurs manquantes, il peut donc être également  intéressant de vérifier manuellement la rente précédente  et la rente suivante de chacun de ceux-ci ; au besoin, ajouter les relations  au tableau de données. La tableau \ref{tab:corr_relation} indique les relations qui ont été ajoutées au tableau de données après l'analyse manuelle des rentes précédentes et suivantes à celle d'où provenaient les valeurs manquantes.
+Les rentes étant classées selon un ordre topographique, il est régulier qu'un même anthroponyme apparaisse dans l'énoncé de deux ou trois rentes successives : une première fois, comme voisin d'un bien arrenté, une seconde fois, comme débiteur de la rente suivante, et une troisième fois, à nouveau comme voisin d'un autre bien arrenté adjacent au sien. Après avoir identifié les individus derrière les valeurs manquantes, il peut donc être également  intéressant de vérifier la rente précédente  et la rente suivante de chacun de ceux-ci ; au besoin, ajouter les relations  au tableau de données. Le tableau \ref{tab:corr_relation} indique les relations qui ont été incorporées au tableau de données après l'analyse manuelle des rentes précédentes et suivantes à celle d'où provenaient les valeurs manquantes.
 \input{3.Results/Tables/corr_relation}
- 
  
 \section{Modélisation des graphes}
 \subsection{Modes de représentation}
 Il existe différents modes pour la représentation des objets que sont les graphes. Les trois principaux sont :
 \begin{itemize}
-    \item La liste <<origine/destination>> des liens
-    \item La matrice d'adjacence
-    \item La graphe sous sa forme graphique
+    \item La liste <<origine/destination>> des liens,
+    \item La matrice d'adjacence,
+    \item La graphe sous sa forme graphique.
 \end{itemize}
 
-Ces trois formes sont équivalentes, dès lors, pour modéliser un graphe sous sa forme graphique, il est possible d'utiliser, soit une liste des liens, soit une matrice d'adjacence. La figure \ref{fig:representation_graphes}\footfullcite[p.5]{beauguitte_graphes_2010} illustre ces trois modes. Dans notre,  nous utilisons la liste de liens  <<origine/destination>> qui est assemblée lors de la phase \textit{d'extraction des relations}, qui est la méthode la plus courante.
+Ces trois formes sont équivalentes, dès lors, pour modéliser un graphe sous sa forme graphique, il est possible d'utiliser, soit une liste des liens, soit une matrice d'adjacence. La figure \ref{fig:representation_graphes}\footfullcite[p.5]{beauguitte_graphes_2010} illustre ces trois modes. Dans notre cas, nous utilisons la liste de liens  <<origine/destination>> qui est assemblée lors de la phase \textit{d'extraction des relations}, qui est la méthode la plus conventionnelle.
 \begin{figure}
     \centering
     \includegraphics[scale=0.75]{3.Results/Img/mode_de_representation_graphes.png}
@@ -95,7 +92,7 @@ Ces trois formes sont équivalentes, dès lors, pour modéliser un graphe sous s
 
 \subsection{Création de l'objet Igraph et modélisation}
 La modélisation des graphes se fait par la fonction  \textit{graph\_from\_data\_frame()}, de la bibliothèque \textit{Igraph}, avec en paramètre le tableau de données \textit{df\_links}.
-Cette fonction convertit le tableau de données introduit  en un objet Igraph  reprenant toutes les caractéristiques du graphes. Cet objet peut ensuite être traduit en visualisation  avec la fonction de base \textit{plot()}.
+Cette fonction convertit le tableau de données introduit  en un objet Igraph  reprenant toutes les caractéristiques du graphe. Cet objet peut ensuite être traduit en visualisation en employant la fonction de base \textit{plot()} ou \textit{ggraph()}.
 
 \begin{figure}[h]
     \centering
@@ -115,9 +112,9 @@ Un premier essaie avec les paramètres par défaut, sur un ensemble choisi aléa
 \end{figure}
 
 %modélisation
-Lorsque le graphe comprend un grand nombre de sommets, comme dans  notre cas, on parle plutôt de \textit{grand graphe} ou de \textit{grand réseaux}. Cela implique de devoir adapter les paramètres  de la fonction qui modélise le  graphe, sous peine que ce dernier ne devient illisible par le chevauchement des sommets, des arêtes ou des labels.
+Lorsque le graphe comprend un nombre important de sommets, comme dans  notre cas, il est plutôt désigné comme \textit{grand graphe} ou comme \textit{grands réseaux}. Cela implique de devoir adapter les paramètres  de la fonction qui modélise le  graphe, sous peine que ce dernier ne devienne illisible par le chevauchement des sommets, des arêtes ou des labels.
 
-Par rapport au premier graphe de la figure \ref{fig:test_graphe}, la taille des sommets à donc été réduite et les labels des sommets ont été supprimés, à l'exception de celui de Jehan de Franche. Également,  une couleur à été affectée à chaque arête en fonction de l'escroete d'où a été extrait la relation. Finalement, la spatialisation, c'est-à-dire,  l'algorithme qui définit l'emplacement des sommets dans le plan bidimensionnel, est définie par le paramètre \textit{layout}. Pour générer le graphe de la figure  \ref{fig:plot_igraph}, c'est le layout \textit{layout\_nicely} qui a été sélectionné. Ce layout tente de déterminer lui-même la spatialisation la plus appropriée. A ce stade, les sommets sont encore placés de manière non-déterministe : chaque appel de la fonction \textit{plot()}  générera un graphe différent, et ce, malgré que les paramètres soient inchangés. Cette visualisation nous permet toute foi d'avoir un premier regard  sur la connectivité  des sommets, la longueur des chemins et leur localisation au niveau des escroetes.
+Par rapport au premier graphe de la figure \ref{fig:test_graphe}, la taille des sommets a donc été réduite et les labels des sommets ont été supprimés, à l'exception de celui de Jehan de Franche. Également,  une couleur a été affectée à chaque arête en fonction de l'escroete contenant la relation. Pour finir, la spatialisation, c'est-à-dire,  l'algorithme qui définit l'emplacement des sommets dans le plan, est définie par le paramètre \textit{layout}. Pour générer le graphe de la figure  \ref{fig:plot_igraph}, c'est le layout \textit{layout\_nicely} qui a été sélectionné. Ce layout tente de déterminer lui-même la spatialisation la plus appropriée. À ce stade, les sommets sont encore placés de manière non déterministe : chaque appel de la fonction \textit{plot()}  générera un graphe différent, et ce, bien que les paramètres soient inchangés. Cette visualisation nous permet toute foi d'avoir un premier regard  sur la connectivité  des sommets, la longueur des chemins et leur localisation au niveau des escroetes.
 
 \begin{figure}
     \centering
@@ -126,7 +123,7 @@ Par rapport au premier graphe de la figure \ref{fig:test_graphe}, la taille des 
     \label{fig:plot_igraph}
 \end{figure}
 
-D'autres algorithmes de spatialisation ont été testés, mais aucun ne s'est révélés réellement plus pertinent comme le montre la figure \ref{fig:layout}.
+D'autres algorithmes de spatialisation ont été testés, mais aucun ne s'est révélé réellement plus pertinent comme le montre la figure \ref{fig:layout}.
 
 \begin{figure}
     \centering

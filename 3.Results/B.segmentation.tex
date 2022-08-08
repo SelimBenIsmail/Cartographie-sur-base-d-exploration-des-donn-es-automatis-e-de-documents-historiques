@@ -1,5 +1,5 @@
 \section{Segmentation du texte}
-La phase de segmentation est la première étape d'extraction des données.
+La phase de segmentation est la première phase du processus et l'extraction des données.
 L'algorithme est développé sur les vingt premières pages du registre. Lorsque celui-ci atteint une précision suffisante sur cet ensemble de données réduit, il est alors testé et évalué sur l'ensemble du registre ; au besoin, il est corrigé ou amélioré.
 
 Lorsque le document source est importé dans l'environnement de développement en format texte (\textit{.txt}), ce dernier va découper le contenu textuel en petites chaînes de caractères au niveau des espaces et stocker celles-ci dans un vecteur de type caractère. Ceci présente l'avantage que chaque mot ou marqueur de structure peut être désigné par sa position à l'intérieur du vecteur. Par conséquent, capturer une section spécifique du texte nécessite uniquement de pouvoir déterminer les positions du début et de fin de celle-ci au sein du vecteur.  
@@ -12,16 +12,16 @@ Quant aux procédés de détection et de capture des différentes parties du doc
     \centering
     \begin{tabular}{|l|c|l|}
         \hline \textbf{Objet} & \textbf{Symbole} & \textbf{Regex ou Formule}  \\
-        \hline \hline Marqueur d'escroete & $mEs$ & /\textasciicircum[IV]+([1-9])?\$/ \\
+        \hline \hline Marqueur d'escroete & $mEs$ & \textasciicircum[IV]+([1-9])?\$ \\
         \hline Section d'escroete & $sEs$& $ sEs_{[n]} =  T[mEs_{[n]}:mEs_{[n+1]}-1] $\\
         \hline  Définition d'escroete & $dEs $& $ dEs_{[n]} = T[mEs_{[n]}:mCo_{[1]}-1] $\\
-        \hline  Marqueur de connétablie & $mCo$ & /[0-9]+°/ \\
+        \hline  Marqueur de connétablie & $mCo$ & [0-9]+° \\
         \hline Section de connétablie & $sCo $& $sCo_{[n]} =  sEs[mCo_{[n]}:mCo_{[n+1]}-1] $\\
         \hline Définition de connétablie & $dCo$ & $ dCo_{[n]} = sEs[mCo_{[n]}:mRdV_{1]}-1] $\\
             & & $ dCo_{[n]} = sEs[mCo_{[n]}:mRe_{1]}-1] $ \\
-        \hline  Marqueur de rang de voie & $mRdv$ & /\textasciicircum[AB]\$/ \\
+        \hline  Marqueur de rang de voie & $mRdv$ & \textasciicircum[AB]\$ \\
         \hline Section de rang de voie & $sRdv$ &$ sRdv_{[n]} = sCo[mRdv_{[n]}:mRdv_{[n+1]}-1] $\\
-        \hline Marqueur de rente & $mRe$ & /[0-9]\{2,\}./ \\
+        \hline Marqueur de rente & $mRe$ & [0-9]\{2,\}. \\
         \hline Section de rente & $sRe$& $sRe_{[n]} = sRdv[mRe_{[n]}:mRe_{[n+1]}-1]$ \\
             & &  $ sRe_{[n]} = sCo[mRe_{[n]}:mRe_{[n+1]}-1]$ \\
         \hline
@@ -64,8 +64,8 @@ Le script de segmentation nous retourne toutes les informations extraites depuis
     \label{eval_seg}
 \end{table}
 
-Les résultats de cette phase de segmentation sont plutôt satisfaisants, la très grande majorité des informations sont extraites avec succès comme le montre le tableau \ref{eval_seg}. 
-Quelques informations sont manquantes par rapport à la définition des escroetes III et IV. Ces lacunes sont dues à une irrégularité dans le registre. Ces 2 erreurs affectent au total 67 lignes dans le tableau de données principal, cependant, ce n'est pas trop grave étant donné que les numéros d'escroetes sont présents et qu'ils suffisent à identifier la zone topographie des rentes. En dehors de cela, on retrouve quelques erreurs de typographies, principalement dans les définitions des escroetes et dans les sections des rentes. Ces erreurs concernent les dernières pages du registre de rentes qui présentent moins de régularité que le reste du document.
+Les résultats de cette phase de segmentation sont relativement satisfaisants, la très grande majorité des informations sont extraites avec succès comme le montre le tableau \ref{eval_seg}. 
+Quelques informations sont manquantes par rapport à la définition des escroetes III et IV. Ces lacunes sont dues à une irrégularité dans le registre. Ces 2 erreurs affectent au total 67 lignes dans le tableau de données principal, cependant, ce n'est pas trop grave étant donné que les numéros d'escroetes sont présents et qu'ils suffisent à identifier la zone topographique des rentes. En dehors de cela, quelques erreurs de typographies sont remarquées, principalement dans les définitions des escroetes et dans les sections des rentes. Ces erreurs concernent les dernières pages du registre de rentes qui présentent moins de régularité que le reste du document.
 
 
 

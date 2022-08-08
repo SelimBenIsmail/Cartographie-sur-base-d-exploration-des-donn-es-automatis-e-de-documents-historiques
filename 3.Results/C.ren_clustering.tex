@@ -1,6 +1,6 @@
 
 \section{Reconnaissance des entités nommées}
-La reconnaissance des entités nommées s'effectue au sein des sections correspondant aux textes des rentes qui sont stockées dans le tableau de données principal. Chacune de ces sections est fouillée à l'aide d'une expression régulière afin de détecter les caractéristiques morphosyntaxiques correspondant aux anthroponymes du  nord  de la France au Moyen-Âge.
+La reconnaissance des entités nommées s'effectue au sein des sections correspondant aux énoncés des rentes qui sont stockées dans le tableau de données principal. Chacune de ces sections est fouillée à l'aide d'une expression régulière afin de détecter les caractéristiques morphologiques correspondant aux anthroponymes du nord de la France au Moyen-Âge.
 \newpage
 L'expression régulière dont il est question nous est donnée par les travaux de S. De Valeriola\footfullcite[p.10]{de_valeriola_lordinateur_2021}. À celle-ci, un petit ajout a été effectué afin de capturer les éventuelles abréviations <<Mgr>>  ---  correspondant au titre de <<Monseigneur>> --- qui, si elles ne sont pas prises en considération, empêchent ponctuellement l'expression régulière de capturer l'entièreté de l'anthroponyme.
 
@@ -13,7 +13,7 @@ L'expression régulière dont il est question nous est donnée par les travaux d
     }
 \]
 
-Celle-ci peut être décomposée en quatre sous-expressions, correspondant chacune à une partie de l'anthroponyme.
+Cette expression régulière peut être décomposée en quatre sous-expressions, correspondant chacune à une partie de l'anthroponyme.
 \begin{itemize}
     \item La première partie capture le titre  dans l'éventualité où il y en a un : \[(Mgr)\; ?\]
     \item La seconde capture le nom de baptême de la personne : \[[:upper:][:lower:]+\]
@@ -39,9 +39,9 @@ L'idée derrière cette modification est d'alourdir significativement le score l
 %methode
 La distance Damerau-Levensthein entre chaque nom testé est calculée, et tous les couples de noms dont la distance est égale ou inférieure à la distance de seuil (changeante en fonction de la nature des éléments testés) sont regroupés dans un tableau de données. Après quoi, chaque groupe est manuellement vérifié et annoté <<correct>> ou <<incorrect>> par l'agent humain.
 
-Six configurations ont donc été analysées :
+Six configurations ont  été analysées :
 \begin{itemize}
-    \item sur l'anthroponyme complet (nom de baptême et patronyme), considéré comme une seule chaîne de caractères, avec une distance de seuil à 3 (tableau \ref{groupe_anthro}).
+    \item Sur l'anthroponyme complet (nom de baptême et patronyme), considéré comme une seule chaîne de caractères, avec une distance de seuil à 3 (tableau \ref{groupe_anthro}).
     \item Sur l'anthroponyme complet, avec une distance de seuil à 4, et avec la modification de la pondération (tableau \ref{groupe_anthro_md}).
     \item Sur le nom de baptême uniquement, avec une distance de seuil à 2 (tableau \ref{groupe_prenom}).
     \item Sur le nom de baptême uniquement, avec une distance de seuil à 2, et avec la modification de pondération (tableau \ref{groupe_prenom_md}).
@@ -174,13 +174,13 @@ Six configurations ont donc été analysées :
 
 On observe un résultat peu surprenant à certains égards : les groupes corrects sont principalement ceux ayant des éléments séparés par une faible distance, et la grande majorité des couples incorrects sont ceux dont les éléments sont séparés par une grande distance. 
 Plus les chaînes de caractères sont, en moyenne, longues, plus ce phénomène se marque.
-Ainsi, dans les noms de baptême, qui sont généralement plus courts que les patronymes ou les anthroponymes, on observe du bruit, et ce même dans les groupes à une distance de 1. Alors que dans les anthroponymes on retrouve les premières traces de bruit qu’à partir de 4 distances.
-Une autre observation est que le changement de pondération améliore notablement la justesse des résultats --- entre 17 \% et 40 \% d'amélioration  --- pour tous les . Pour être plus exacte, la modification diminue le taux de bruit sans pour autant affecter le taux de rappel.
+Ainsi, dans les noms de baptême, qui sont généralement plus courts que les patronymes ou les anthroponymes, du bruit est observé, et ce même dans les groupes à une distance de 1. Alors que dans les anthroponymes, les premières traces de bruit n'apparaissent qu’à partir de 4 distances.
+Une autre observation est que le changement de pondération améliore notablement la justesse des résultats --- entre 17 \% et 40 \% d'amélioration  --- pour les trois configurations essayées. Pour être plus exact, la modification diminue le taux de bruit sans pour autant affecter le taux de rappel.
 Ce sont donc les tests sur le groupe des anthroponymes entiers, avec l'alourdissement du poids des opérations de substitution à 1.25 au lieu de 1, et un seuil de distance à 3, qui retournent les meilleurs résultats avec une exactitude complète des groupes déterminés depuis l'échantillon de test.
 
 \subsection{Regroupement des anthroponymes}
 %matrice de distance et heatmap
-Le script qui regroupe des anthroponymes par le biais du calcul des distances Damerau-Levensthein est utilisé sur le vecteur contenant l'ensemble des formes d'anthroponymes recensés au sein du document source. L'opération est relativement lourde pour l'ordinateur puisqu'il a à calculer 638401 résultats au travers de celle-ci et prend, par conséquent, un certain temps. La figure \ref{heatmap_anthro} représente le graphique de type \textit{Heatmap} retourné par l'exécution du script. Celui-ci apporte une plus-value discutable dans l'analyse ou la détection des formes variantes des anthroponymes, mais a le mérite d'illustrer parfaitement l'impossibilité d'effectuer ces opérations manuellement, et, par extension, la nécessité de développer des processus automatisés pour résoudre ceux-ci.
+Le script qui regroupe des anthroponymes par le biais du calcul des distances Damerau-Levensthein est utilisé sur le vecteur contenant l'ensemble des formes d'anthroponymes recensés au sein du document source. L'opération est relativement lourde pour l'ordinateur puisqu'il a à calculer 638401 résultats au travers de celle-ci et prend, par conséquent, un certain temps. La figure \ref{heatmap_anthro} présente le graphique de type \textit{Heatmap} retourné par l'exécution du script. Celui-ci apporte une plus-value discutable dans l'analyse ou la détection des formes variantes des anthroponymes, mais a le mérite d'illustrer parfaitement l'impossibilité d'effectuer ces opérations manuellement, et, par extension, la nécessité de développer des processus automatisés pour résoudre ceux-ci.
 \begin{figure}
     \centering
     \includegraphics [scale=2]{3.Results/Img/heatmap.pdf}
